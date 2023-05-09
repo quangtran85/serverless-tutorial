@@ -1,0 +1,40 @@
+{
+    "search.exclude": {
+        "**/.nyc_output": true,
+        "**/.vscode": true,
+        "**/coverage": true,
+        "**/dist": true,
+        "**/node_modules": true,
+        "**/.history": true,
+        "**/.static": true,
+        "**/.tmp": true,
+        "**/.git": true
+    },
+    "editor.hover.delay": 800,
+    "eslint.options": {
+        "extensions": [
+            ".js",
+            ".ts",
+            ".json"
+        ]
+    },
+    "eslint.format.enable": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "git.terminalAuthentication": false,
+    "github.gitAuthentication": false,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/tmp": true,
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/dist": true
+    },
+    "explorerExclude.backup": {}
+}
