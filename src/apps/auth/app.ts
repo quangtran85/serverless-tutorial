@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import * as serverless from 'serverless-http';
 import { createExpressServer, useContainer } from 'routing-controllers';
 import { Container } from 'typedi';
-import { CustomerController } from './controllers/customer.controller';
+import { AuthController } from './controllers/auth.controller';
 import { connectMongoDb } from '@shared/providers/mongodb';
 import { HttpErrorHandler } from '@shared/middlewares/http-error-handler.middleware';
 import authorizationChecker from '@shared/auth/authorization-checker';
@@ -12,9 +12,9 @@ connectMongoDb((process.env.MONGODB_URL as string) || '');
 useContainer(Container);
 
 export const application = createExpressServer({
-  routePrefix: '/account',
+  routePrefix: '/auth',
   defaultErrorHandler: false,
-  controllers: [CustomerController],
+  controllers: [AuthController],
   middlewares: [HttpErrorHandler],
   authorizationChecker: authorizationChecker,
   currentUserChecker: currentUserChecker,

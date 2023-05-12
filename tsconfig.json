@@ -14,8 +14,7 @@
     "rootDir": "./",
     "baseUrl": "./",
     "paths": {
-      "@account/*": ["src/apps/account/*"],
-      "@cms/*": ["src/apps/cms/*"],
+      "@apps/*": ["src/apps/*"],
       "@shared/*": ["src/shared/*"],
     },
     "emitDecoratorMetadata": true,

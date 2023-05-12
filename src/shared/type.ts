@@ -26,3 +26,10 @@ export type ResourceDataOutput<T> = {
 export declare type ResourcesPaginateOuput<T> = {
   pagination?: PaginateOuput;
 } & ResourceDataOutput<T[]>;
+
+export enum UserRole {
+  SYSTEM = 'system',
+  MANAGER = 'manager',
+  CUSTOMER = 'customer',
+  GUEST = 'guest',
+}

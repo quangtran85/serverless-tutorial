@@ -10,18 +10,20 @@ import { Service } from 'typedi';
 export class HttpErrorHandler implements ExpressErrorMiddlewareInterface {
   error(error: any, request: any, response: any, next: (err: any) => any) {
     const respError = {
-      httpCode: error.httpCode,
-      errorCode: error?.errorCode,
+      statusCode: error?.httpCode ?? error?.statusCode ?? 500,
+      error: error?.errorCode,
       message: error.message,
     };
+
     if (error && error.name === 'BadRequestError') {
+      respError['error'] = error.name;
       respError['errors'] = error.errors.map((err: ValidationError) => ({
         property: err?.property,
         constraints: err?.constraints,
       }));
     }
 
-    response.status(error.httpCode).json(respError);
+    response.status(respError.statusCode).json(respError);
     next(error);
   }
 }

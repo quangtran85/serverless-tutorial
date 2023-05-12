@@ -53,6 +53,25 @@ export abstract class BaseRepository<T extends BaseModel<T>> {
   }
 
   /**
+   * Find one
+   *
+   * @param {FilterQuery<T>} filter
+   * @param {ProjectionType<T> | undefined} select
+   * @param {QueryOptions} options
+   * @returns {Promise<T[]>}
+   */
+  async findOne(
+    filter: FilterQuery<T> = {},
+    select?: ProjectionType<T> | undefined,
+    options?: QueryOptions,
+  ): Promise<T | undefined> {
+    const query = this.model.findOne(filter, select, options);
+    const result = await query.exec();
+
+    return result?.toEntity() ?? undefined;
+  }
+
+  /**
    * Find and count
    *
    * @param {FilterQuery<T>} filter
@@ -108,9 +127,8 @@ export abstract class BaseRepository<T extends BaseModel<T>> {
    * @param {string} id
    * @returns {Promise<T | undefined>}
    */
-  async get(id: string): Promise<T | undefined> {
-    const result = await this.model.findById(id);
-
+  async get(id: string | Types.ObjectId): Promise<T | undefined> {
+    const result = await this.model.findById<T>(id);
     return result?.toEntity() ?? undefined;
   }
 

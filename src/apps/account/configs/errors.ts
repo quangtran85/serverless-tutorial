@@ -1,7 +1,12 @@
 export const Errors = {
-  OBJECT_NOT_FOUND: {
+  RESOURCE_NOT_FOUND: {
     httpCode: 404,
-    errorCode: 'OBJECT_NOT_FOUND',
-    message: 'The object does not found.',
+    errorCode: 'NotFound',
+    message: 'The resource does not found.',
+  },
+  USERNAME_IS_EXISTED: {
+    httpCode: 409,
+    errorCode: 'AlreadyExists',
+    message: 'The username is already existed.',
   },
 };

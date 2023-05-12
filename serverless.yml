@@ -10,12 +10,30 @@ provider:
   deploymentPrefix: serverless
   # deploymentBucket:
   #   name: com.serverless.${self:provider.region}.deploys
+  httpApi:
+    authorizers:
+      authorizerFunc:
+        type: request
+        functionName: authorizerFunc
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - 'lambda:InvokeFunction'
+          Resource:
+            - 'arn:aws:lambda:${self:provider.region}:${aws:accountId}:function:${self:service}-${self:custom.stage}-accountService'
+            - 'arn:aws:lambda:${self:provider.region}:${aws:accountId}:function:${self:service}-${self:custom.stage}-authService'
+
   environment:
-    AWS_SNS_ENDPOINT: ${file(./config.${self:custom.stage}.json):AWS_SNS_ENDPOINT, 'sns.${aws:region}.amazonaws.com'}
-    SNS_AUDIT_TOPIC: arn:aws:sns:${aws:region}:${aws:accountId}:${self:custom.stage}-AuditTopic
+    SERVICE_NAME_PREFIX: ${self:service}-${self:custom.stage}
+    TOKEN_SECRET: abc@123
 
 custom:
   stage: ${opt:stage, 'local'}
+
+  serverless-offline:
+    ignoreJWTSignature: true
 
   # serverless-offline-sns:
   #   port: 4002 # a free port for the sns server to run on
@@ -33,21 +51,36 @@ functions:
     handler: src/apps/account/app.handler
     events:
       - httpApi:
-          method: "*"
-          path: /account/{proxy+}
-
-    environment:
-      MONGODB_URL: ${file(./config.${self:custom.stage}.json):ACCOUNT_MONGODB_URL}
-
-  cmsService:
-    handler: src/apps/cms/app.handler
-    events:
+          method: "POST"
+          path: /account/customers/register
       - httpApi:
           method: "*"
-          path: /cms/{proxy+}
+          path: /account/{proxy+}
+          authorizer: 
+            name: authorizerFunc
+
     environment:
       MONGODB_URL: ${file(./config.${self:custom.stage}.json):ACCOUNT_MONGODB_URL}
 
+  authService:
+    handler: src/apps/auth/app.handler
+    events:
+      - httpApi:
+          method: "POST"
+          path: /auth/login
+      - httpApi:
+          method: "*"
+          path: /auth/{proxy+}
+          authorizer: 
+            name: authorizerFunc
+    environment:
+      MONGODB_URL: ${file(./config.${self:custom.stage}.json):AUTH_MONGODB_URL}
+
+  authorizerFunc:
+    handler: src/apps/auth/handlers/authorizer.handler
+    timeout: 60
+    environment:
+      MONGODB_URL: ${file(./config.${self:custom.stage}.json):AUTH_MONGODB_URL}
 
 resources: 
   Resources:
