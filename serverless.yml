@@ -22,15 +22,17 @@ provider:
           Action:
             - 'lambda:InvokeFunction'
           Resource:
-            - 'arn:aws:lambda:${self:provider.region}:${aws:accountId}:function:${self:service}-${self:custom.stage}-accountService'
-            - 'arn:aws:lambda:${self:provider.region}:${aws:accountId}:function:${self:service}-${self:custom.stage}-authService'
+            - 'arn:aws:lambda:${self:provider.region}:${self:custom.awsAccountId}:function:${self:service}-${self:custom.stage}-accountService'
+            - 'arn:aws:lambda:${self:provider.region}:${self:custom.awsAccountId}:function:${self:service}-${self:custom.stage}-authService'
 
   environment:
+    AWS_ACCOUNT_ID: ${file(./config.${self:custom.stage}.json):AWS_ACCOUNT_ID}
     SERVICE_NAME_PREFIX: ${self:service}-${self:custom.stage}
     TOKEN_SECRET: abc@123
 
 custom:
   stage: ${opt:stage, 'local'}
+  awsAccountId: ${file(./config.${self:custom.stage}.json):AWS_ACCOUNT_ID}
 
   serverless-offline:
     ignoreJWTSignature: true
