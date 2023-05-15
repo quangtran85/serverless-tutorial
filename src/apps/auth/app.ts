@@ -3,12 +3,11 @@ import * as serverless from 'serverless-http';
 import { createExpressServer, useContainer } from 'routing-controllers';
 import { Container } from 'typedi';
 import { AuthController } from './controllers/auth.controller';
-import { connectMongoDb } from '@shared/providers/mongodb';
+import { connectDb } from '@shared/providers/mongodb';
 import { HttpErrorHandler } from '@shared/middlewares/http-error-handler.middleware';
 import authorizationChecker from '@shared/auth/authorization-checker';
 import currentUserChecker from '@shared/auth/current-user-checker';
 
-connectMongoDb((process.env.MONGODB_URL as string) || '');
 useContainer(Container);
 
 export const application = createExpressServer({
@@ -21,7 +20,8 @@ export const application = createExpressServer({
 });
 
 export const handler: serverless.Handler = serverless(application, {
-  request: function (req: any, event: any) {
+  request: async (req: any, event: any) => {
+    await connectDb((process.env.MONGODB_URL as string) || '');
     req.event = event;
     req.context = event.requestContext;
   },

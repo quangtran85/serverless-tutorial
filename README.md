@@ -11,11 +11,38 @@ npm install
 ```
 
 ## Developing locally
+Use an existing AWS Profile
+To easily switch between projects without the need to do aws configure every time you can use environment variables. For example you define different profiles in ~/.aws/credentials
+```
+[profile-local]
+aws_access_key_id=AKIAIOSFODNN7EXAMPLE
+aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+```
+
 Create new file `config.local.json` by copying the `config.example.json`, then input configuration values, then run the command to develop on the local environment
 ```
 npm run start:dev
 // or
-sls offline start --reloadHandler --stage=local
+sls offline start --reloadHandler --stage=local --profile=profile-local
+```
+
+## Using Mongodb on the local environment
+- Pull the MongoDB Docker Image
+```
+docker pull mongodb/mongodb-community-server
+```
+- Run the Image as a Container
+```
+docker run --platform linux/amd64 --name mongo -d mongodb/mongodb-community-server:latest 
+```
+- Configure MongoDB local
+```
+// config.local.json
+{
+  "AWS_ACCOUNT_ID": "627365243885",
+  "ACCOUNT_MONGODB_URL": "mongodb://127.0.0.1:27017/account",
+  "AUTH_MONGODB_URL":"mongodb://127.0.0.1:27017/auth"
+}
 ```
  
 ## Deploying

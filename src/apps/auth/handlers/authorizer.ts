@@ -3,12 +3,11 @@ import {
   PolicyDocument,
   APIGatewayRequestAuthorizerEvent,
 } from 'aws-lambda';
-import { connectMongoDb } from '@shared/providers/mongodb';
+import { connectDb } from '@shared/providers/mongodb';
 import { TokenRepository } from '../repositories/token.repository';
 import { verifyJwtToken } from '@shared/libs/jwt-utils';
 import { AppException } from '@shared/libs/exception';
 import * as moment from 'moment-timezone';
-connectMongoDb((process.env.MONGODB_URL as string) || '');
 
 // Generate policy to allow this user on this API:
 const generatePolicy = (
@@ -70,6 +69,8 @@ export async function handler(
 }
 
 const loginCheck = async (userId: string, token: string) => {
+  await connectDb((process.env.MONGODB_URL as string) || '');
+
   const tokenData = await new TokenRepository().findOne({
     accessToken: token,
     userId: userId,
