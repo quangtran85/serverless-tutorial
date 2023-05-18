@@ -1,5 +1,5 @@
 import { BaseModel } from './base.model';
-import { PaginateType } from '../../type';
+import { PaginateType } from '@shared/type';
 import { ReturnModelType } from '@typegoose/typegoose';
 import {
   AggregateOptions,

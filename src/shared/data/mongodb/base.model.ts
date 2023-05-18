@@ -7,6 +7,7 @@ export abstract class BaseModel<T> extends defaultClasses.TimeStamps {
   public createdAt?: Date;
   public updatedAt?: Date;
   abstract toEntity(): T;
+
   toBaseEntity(entity: any): T {
     entity.id = this._id.toHexString();
     entity.createdAt = this.createdAt;

@@ -37,6 +37,7 @@ custom:
 
   serverless-offline:
     ignoreJWTSignature: true
+    httpPort: 5000
 
   # serverless-offline-sns:
   #   port: 4002 # a free port for the sns server to run on
@@ -45,11 +46,11 @@ custom:
   #   sns-endpoint: ${self:provider.environment.AWS_SNS_ENDPOINT}
 
   serverless-offline-watcher:
-    - path: 
+    - path:
       - src/**/*.(js|ts)
       command: echo "There were files has modified!"
 
-functions: 
+functions:
   accountService:
     handler: src/apps/account/app.handler
     events:
@@ -59,9 +60,8 @@ functions:
       - httpApi:
           method: "*"
           path: /account/{proxy+}
-          authorizer: 
+          authorizer:
             name: authorizerFunc
-
     environment:
       MONGODB_URL: ${file(./config.${self:custom.stage}.json):ACCOUNT_MONGODB_URL}
 
@@ -74,7 +74,7 @@ functions:
       - httpApi:
           method: "*"
           path: /auth/{proxy+}
-          authorizer: 
+          authorizer:
             name: authorizerFunc
     environment:
       MONGODB_URL: ${file(./config.${self:custom.stage}.json):AUTH_MONGODB_URL}
@@ -85,7 +85,7 @@ functions:
     environment:
       MONGODB_URL: ${file(./config.${self:custom.stage}.json):AUTH_MONGODB_URL}
 
-resources: 
+resources:
   Resources:
     AuditTopic:
       Type: AWS::SNS::Topic

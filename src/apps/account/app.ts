@@ -9,6 +9,7 @@ import authorizationChecker from '@shared/auth/authorization-checker';
 import currentUserChecker from '@shared/auth/current-user-checker';
 
 useContainer(Container);
+
 export const application = createExpressServer({
   routePrefix: '/account',
   defaultErrorHandler: false,
@@ -21,7 +22,6 @@ export const application = createExpressServer({
 export const handler: serverless.Handler = serverless(application, {
   request: async (req: any, event: any) => {
     await connectDb((process.env.MONGODB_URL as string) || '');
-
     req.event = event;
     req.context = event.requestContext;
   },

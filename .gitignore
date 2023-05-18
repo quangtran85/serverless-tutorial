@@ -22,8 +22,9 @@ logs
 config.*.json
 !config.example.json
 
-# avairable environment 
+# avairable environment
 .env
 
 # npm key
 .npmrc
+package-lock.json
