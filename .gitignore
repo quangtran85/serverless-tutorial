@@ -27,3 +27,4 @@ config.*.json
 
 # npm key
 .npmrc
+.npm
