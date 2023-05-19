@@ -23,15 +23,16 @@ services:
     ports:
       - 5050:5050
     volumes:
-      - ./:/root/app
+      - ./:/root/app/
       - ~/.aws:/root/.aws
+      - /root/app/.build
+      - /root/app/node_modules
     networks:
       - serverless-app
     command: npm run start:docker
 
 volumes:
   mongodb:
-
 
 networks:
   serverless-app:
