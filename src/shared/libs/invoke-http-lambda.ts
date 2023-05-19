@@ -25,7 +25,7 @@ export const invokeAsync = async (
     apiVersion: '2015-03-31',
     region: process.env.AWS_DEFAULT_REGION,
     endpoint: process.env.IS_OFFLINE
-      ? 'http://localhost:3002'
+      ? 'http://localhost:5001'
       : `https://lambda.${process.env.AWS_DEFAULT_REGION}.amazonaws.com`,
   });
 

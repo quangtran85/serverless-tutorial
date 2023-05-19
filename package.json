@@ -22,6 +22,7 @@
   },
   "scripts": {
     "start:dev": "sls offline start --reloadHandler --stage=local",
+    "start:docker": "sls offline start --reloadHandler --stage=local --host=0.0.0.0",
     "deploy:dev": "sls deploy --stage=dev"
   },
   "devDependencies": {
