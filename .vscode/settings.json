@@ -8,7 +8,10 @@
         "**/.history": true,
         "**/.static": true,
         "**/.tmp": true,
-        "**/.git": true
+        "**/.git": true,
+        "**/.npm": true,
+        "**/.build": true,
+        "**/.serverless": true
     },
     "editor.hover.delay": 800,
     "eslint.options": {
@@ -34,7 +37,10 @@
         "**/tmp": true,
         "**/node_modules": true,
         "**/bower_components": true,
-        "**/dist": false
+        "**/dist": false,
+        "**/.npm": true,
+        "**/.build": true,
+        "**/.serverless": true
     },
     "explorerExclude.backup": {}
 }
