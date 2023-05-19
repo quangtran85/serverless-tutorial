@@ -20,7 +20,7 @@ export class User extends BaseModel<User> {
   @prop({ required: false, limit: 10 })
   public postal: string;
 
-  @prop({ required: true, default: false })
+  @prop({ required: true, default: true })
   public isMember: boolean;
 
   toEntity(user = new User()): User {
