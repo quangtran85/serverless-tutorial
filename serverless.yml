@@ -7,7 +7,7 @@ provider:
   runtime: nodejs18.x
   memorySize: 512
   logRetentionInDays: 14
-  timeout: 30
+  timeout: 60
   deploymentPrefix: serverless
   # deploymentBucket:
   #   name: com.serverless.${self:provider.region}.deploys
@@ -37,8 +37,8 @@ custom:
 
   serverless-offline:
     ignoreJWTSignature: true
-    host: 0.0.0.0
-    httpPort: 5000
+    httpPort: 5050
+    lambdaPort: 5001
 
   # serverless-offline-sns:
   #   port: 4002 # a free port for the sns server to run on

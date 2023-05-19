@@ -21,16 +21,17 @@ services:
       dockerfile: Dockerfile
       target: dev
     ports:
-      - 5000:5000
+      - 5050:5050
     volumes:
       - ./:/root/app
       - ~/.aws:/root/.aws
     networks:
       - serverless-app
-    command: npm run start:dev
-    
+    command: npm run start:docker
+
 volumes:
   mongodb:
+
 
 networks:
   serverless-app:

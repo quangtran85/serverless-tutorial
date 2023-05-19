@@ -13,4 +13,4 @@ RUN npm install -g serverless
 RUN npm install
 
 USER root
-EXPOSE 5000
+EXPOSE 5050
