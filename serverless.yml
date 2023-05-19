@@ -37,7 +37,7 @@ custom:
 
   serverless-offline:
     ignoreJWTSignature: true
-    httpPort: 5000
+    httpPort: 5050
     lambdaPort: 5001
 
   # serverless-offline-sns:
