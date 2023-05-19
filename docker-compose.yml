@@ -34,7 +34,6 @@ services:
 volumes:
   mongodb:
 
-
 networks:
   serverless-app:
     driver: bridge
