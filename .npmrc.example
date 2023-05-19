@@ -1,0 +1,5 @@
+registry=https://registry.npmjs.com/
+cache=./.npm/cache
+fetch-retries=3
+fetch-retry-mintimeout=1000000
+fetch-retry-maxtimeout=9000000

@@ -1,5 +1,5 @@
 {
   "AWS_ACCOUNT_ID": "627365243885",
-  "ACCOUNT_MONGODB_URL": "",
-  "AUTH_MONGODB_URL":""
+  "ACCOUNT_MONGODB_URL": "mongodb://root:example@mongo:27017/account?authSource=admin",
+  "AUTH_MONGODB_URL":"mongodb://root:example@mongo:27017/local?authSource=admin"
 }

@@ -37,6 +37,7 @@ custom:
 
   serverless-offline:
     ignoreJWTSignature: true
+    host: 0.0.0.0
     httpPort: 5000
 
   # serverless-offline-sns:
@@ -95,6 +96,6 @@ resources:
 plugins:
   - serverless-plugin-typescript
   - serverless-tscpaths
-  - serverless-offline-sns
+  # - serverless-offline-sns
   - serverless-offline
   - serverless-offline-watcher
