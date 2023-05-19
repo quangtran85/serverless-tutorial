@@ -17,11 +17,19 @@ export class User extends BaseModel<User> {
   @prop({ required: false, limit: 100 })
   public email: string;
 
+  @prop({ required: false, limit: 10 })
+  public postal: string;
+
+  @prop({ required: true, default: false })
+  public isMember: boolean;
+
   toEntity(user = new User()): User {
     user = this.toBaseEntity(user);
     user.firstName = this.firstName;
     user.lastName = this.lastName;
     user.email = this.email;
+    user.postal = this.postal;
+    user.isMember = this.isMember;
     return user;
   }
 }
