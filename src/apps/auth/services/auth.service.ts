@@ -100,7 +100,7 @@ export class AuthService {
    */
   async _genereateToken(
     data: UserAuth,
-  ): Promise<{ accessToken: string; refreshToken: string }> {
+  ): Promise<{ accessToken: string; refreshToken: string, userName: string }> {
     const [accessToken, refreshToken] = await Promise.all([
       generateJwtToken({ userId: data.userId, role: data.role }, '1h'),
       generateJwtToken({ userId: data.userId }, '30d'),
@@ -117,6 +117,7 @@ export class AuthService {
     return {
       accessToken: token.accessToken,
       refreshToken: token.refreshToken,
+      userName: data.username,
     };
   }
 }
