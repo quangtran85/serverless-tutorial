@@ -1,4 +1,10 @@
-import { IsEmail, IsNotEmpty, IsOptional, MaxLength } from 'class-validator';
+import {
+  IsBoolean,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  MaxLength,
+} from 'class-validator';
 
 export class CustomerRegisterDto {
   @IsNotEmpty()
@@ -20,4 +26,12 @@ export class CustomerRegisterDto {
   @IsNotEmpty()
   @MaxLength(100)
   lastName: string;
+
+  @IsOptional()
+  @MaxLength(10)
+  postal?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isMember: boolean;
 }

@@ -18,6 +18,8 @@ export type UserOutput = ResourceOuput & {
   firstName: string;
   lastName: string;
   email: string;
+  postal?: string;
+  isMember?: boolean;
   gender?: string;
 };
 export type CreateUserInput = {
@@ -26,6 +28,8 @@ export type CreateUserInput = {
   firstName: string;
   lastName: string;
   email?: string;
+  postal?: string;
+  isMember?: boolean;
   gender?: string;
 };
 export type UpdateUserInput = {
@@ -106,6 +110,8 @@ export class UserService {
         username: entity.username,
         lastName: entity.lastName,
         firstName: entity.firstName,
+        postal: entity.postal,
+        isMember: entity.isMember,
         createdAt: entity.createdAt,
         updatedAt: entity.updatedAt,
       },
