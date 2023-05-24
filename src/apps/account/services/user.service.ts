@@ -12,7 +12,9 @@ import { Service } from 'typedi';
 import { AuthService } from './auth.service';
 
 export type GetUsersInput = GetResourcesInput & { keyword?: string };
+
 export type GetUsersOuput = ResourcesPaginateOuput<UserOutput>;
+
 export type UserOutput = ResourceOuput & {
   username: string;
   firstName: string;
@@ -22,6 +24,7 @@ export type UserOutput = ResourceOuput & {
   isMember?: boolean;
   gender?: string;
 };
+
 export type CreateUserInput = {
   username: string;
   password: string;
@@ -32,6 +35,7 @@ export type CreateUserInput = {
   isMember?: boolean;
   gender?: string;
 };
+
 export type UpdateUserInput = {
   firstName?: string;
   lastName?: string;
@@ -78,6 +82,7 @@ export class UserService {
         email: result.email,
         lastName: result.lastName,
         firstName: result.firstName,
+        isMember: result.isMember,
         createdAt: result.createdAt,
         updatedAt: result.updatedAt,
       },
