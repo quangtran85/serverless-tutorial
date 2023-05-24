@@ -1,5 +1,6 @@
-import { prop, getModelForClass, modelOptions } from '@typegoose/typegoose';
 import { BaseModel } from '@shared/data/mongodb/base.model';
+import { UserRole } from '@shared/type';
+import { getModelForClass, modelOptions, prop } from '@typegoose/typegoose';
 
 export type Gender = 'Female' | 'Male' | 'Other';
 
@@ -20,6 +21,9 @@ export class User extends BaseModel<User> {
   @prop({ required: false, limit: 10 })
   public postal: string;
 
+  @prop({ required: true, default: UserRole.CUSTOMER })
+  public role: UserRole;
+
   @prop({ required: true, default: false })
   public isMember: boolean;
 
@@ -29,6 +33,7 @@ export class User extends BaseModel<User> {
     user.lastName = this.lastName;
     user.email = this.email;
     user.postal = this.postal;
+    user.role = this.role;
     user.isMember = this.isMember;
     return user;
   }

@@ -1,15 +1,15 @@
-import {
-  JsonController,
-  Get,
-  Post,
-  Body,
-  Authorized,
-  CurrentUser,
-} from 'routing-controllers';
-import { Service } from 'typedi';
 import { CustomerRegisterDto } from '@apps/account/dtos/customer/register.dto';
 import { UserService } from '@apps/account/services/user.service';
 import { UserRole } from '@shared/type';
+import {
+  Authorized,
+  Body,
+  CurrentUser,
+  Get,
+  JsonController,
+  Post,
+} from 'routing-controllers';
+import { Service } from 'typedi';
 
 @Service()
 @JsonController('/customers')

@@ -1,6 +1,8 @@
+import { UserRole } from '@shared/type';
 import {
   IsBoolean,
   IsEmail,
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   MaxLength,
@@ -30,6 +32,10 @@ export class CustomerRegisterDto {
   @IsOptional()
   @MaxLength(10)
   postal?: string;
+
+  @IsOptional()
+  @IsEnum(UserRole)
+  role: UserRole;
 
   @IsOptional()
   @IsBoolean()

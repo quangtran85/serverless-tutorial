@@ -1,11 +1,11 @@
 import { Errors } from '@apps/account/configs/errors';
-import { AppException } from '@shared/libs/exception';
 import { UserRepository } from '@apps/account/repositories/user.repository';
+import { AppException } from '@shared/libs/exception';
 import {
   GetResourcesInput,
+  ResourceDataOutput,
   ResourceOuput,
   ResourcesPaginateOuput,
-  ResourceDataOutput,
   UserRole,
 } from '@shared/type';
 import { Service } from 'typedi';
@@ -21,6 +21,7 @@ export type UserOutput = ResourceOuput & {
   lastName: string;
   email: string;
   postal?: string;
+  role?: UserRole;
   isMember?: boolean;
   gender?: string;
 };
@@ -32,6 +33,7 @@ export type CreateUserInput = {
   lastName: string;
   email?: string;
   postal?: string;
+  role?: UserRole;
   isMember?: boolean;
   gender?: string;
 };
@@ -103,9 +105,9 @@ export class UserService {
     const entity = await this.userRepository.createGet(data);
     await this.authService.createUserAuth({
       userId: entity.id,
-      role: UserRole.CUSTOMER,
       username: data.username,
       password: data?.password,
+      role: data?.role || UserRole.CUSTOMER,
     });
 
     return {
@@ -116,6 +118,7 @@ export class UserService {
         lastName: entity.lastName,
         firstName: entity.firstName,
         postal: entity.postal,
+        role: entity.role,
         isMember: entity.isMember,
         createdAt: entity.createdAt,
         updatedAt: entity.updatedAt,

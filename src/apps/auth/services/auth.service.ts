@@ -1,13 +1,13 @@
-import { Service } from 'typedi';
-import { TokenRepository } from '@apps/auth/repositories/token.repository';
-import { UserAuthRepository } from '@apps/auth/repositories/user-auth.repository';
-import { ResourceDataOutput, UserRole } from '@shared/type';
-import * as bcrypt from 'bcryptjs';
-import { AppException } from '@shared/libs/exception';
 import { Errors } from '@apps/auth/configs/errors';
 import { UserAuth } from '@apps/auth/models/user-auth';
-import * as moment from 'moment-timezone';
+import { TokenRepository } from '@apps/auth/repositories/token.repository';
+import { UserAuthRepository } from '@apps/auth/repositories/user-auth.repository';
+import { AppException } from '@shared/libs/exception';
 import { generateJwtToken } from '@shared/libs/jwt-utils';
+import { ResourceDataOutput, UserRole } from '@shared/type';
+import * as bcrypt from 'bcryptjs';
+import * as moment from 'moment-timezone';
+import { Service } from 'typedi';
 
 export type CreateUserAuthInput = {
   userId: string;
