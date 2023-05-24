@@ -1,4 +1,5 @@
 export type SortType = Record<string, 1 | -1>;
+
 export type PaginateType = {
   limit: number;
   skip: number;

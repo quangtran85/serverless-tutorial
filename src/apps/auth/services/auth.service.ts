@@ -1,11 +1,11 @@
 import { Service } from 'typedi';
-import { TokenRepository } from '../repositories/token.repository';
-import { UserAuthRepository } from '../repositories/user-auth.repository';
+import { TokenRepository } from '@apps/auth/repositories/token.repository';
+import { UserAuthRepository } from '@apps/auth/repositories/user-auth.repository';
 import { ResourceDataOutput, UserRole } from '@shared/type';
 import * as bcrypt from 'bcryptjs';
 import { AppException } from '@shared/libs/exception';
-import { Errors } from '../configs/errors';
-import { UserAuth } from '../models/user-auth';
+import { Errors } from '@apps/auth/configs/errors';
+import { UserAuth } from '@apps/auth/models/user-auth';
 import * as moment from 'moment-timezone';
 import { generateJwtToken } from '@shared/libs/jwt-utils';
 
