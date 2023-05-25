@@ -4,4 +4,9 @@ export const Errors = {
     errorCode: 'Unauthorized',
     message: 'The username or password does not matched.',
   },
+  INVALID_REFRESH_TOKEN: {
+    httpCode: 400,
+    errorCode: 'InvalidRefreshToken',
+    message: 'The refresh token is invalid.',
+  },
 };
