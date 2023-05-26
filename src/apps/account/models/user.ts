@@ -1,27 +1,39 @@
 import { prop, getModelForClass, modelOptions } from '@typegoose/typegoose';
 import { BaseModel } from '@shared/data/mongodb/base.model';
 
-export type Gender = 'Female' | 'Male' | 'Other';
-
 @modelOptions({ schemaOptions: { collection: 'users' } })
 export class User extends BaseModel<User> {
-  @prop({ required: true, limit: 100 })
+  @prop({ required: true, limit: 50 })
   public username: string;
 
-  @prop({ required: true, limit: 50 })
-  public firstName: string;
-
-  @prop({ required: true, limit: 50 })
-  public lastName: string;
+  @prop({ required: true, limit: 100 })
+  public email: string;
 
   @prop({ required: false, limit: 100 })
-  public email: string;
+  public address: string;
+
+  @prop({ required: false, limit: 100 })
+  public city: string;
+
+  @prop({ required: false, limit: 100 })
+  public state: string;
+
+  @prop({ required: false })
+  public zipCode: string;
+
+  @prop({ required: false })
+  public isRemember: boolean;
+
 
   toEntity(user = new User()): User {
     user = this.toBaseEntity(user);
-    user.firstName = this.firstName;
-    user.lastName = this.lastName;
     user.email = this.email;
+    user.address = this.address || '';
+    user.city = this.city || '';
+    user.state = this.state || '';
+    user.zipCode = this.zipCode || '' ;
+    user.isRemember = this.isRemember || false ;
+
     return user;
   }
 }
