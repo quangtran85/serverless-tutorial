@@ -107,7 +107,7 @@ export class UserService {
       userId: entity.id,
       username: data.username,
       password: data?.password,
-      role: data?.role || UserRole.CUSTOMER,
+      role: UserRole.CUSTOMER,
     });
 
     return {
@@ -127,6 +127,6 @@ export class UserService {
   }
 
   async update(id: string, data: UpdateUserInput) {
-    return this.userRepository.update(id, { ...data }, { new: true });
+    return this.userRepository.updateById(id, { ...data }, { new: true });
   }
 }
