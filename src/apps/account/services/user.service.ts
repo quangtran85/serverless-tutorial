@@ -16,11 +16,11 @@ export type GetUsersOutput = ResourcesPaginateOuput<UserOutput>;
 export type UserOutput = ResourceOuput & {
   username: string;
   email: string;
-  address: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  isMember: boolean;
+  address?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+  isMember?: boolean;
 };
 export type CreateUserInput = {
   username: string;
