@@ -1,4 +1,5 @@
 export type SortType = Record<string, 1 | -1>;
+
 export type PaginateType = {
   limit: number;
   skip: number;
@@ -32,4 +33,9 @@ export enum UserRole {
   MANAGER = 'manager',
   CUSTOMER = 'customer',
   GUEST = 'guest',
+}
+
+export enum TokenStatus {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
 }

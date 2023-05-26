@@ -1,14 +1,15 @@
+import { CreateUserAuthDto, LoginDto } from '@apps/auth/dtos/auth';
+import { AuthService } from '@apps/auth/services/auth.service';
+import { UserRole } from '@shared/type';
 import {
+  Authorized,
+  Body,
+  CurrentUser,
+  Delete,
   JsonController,
   Post,
-  Body,
-  Delete,
-  Authorized,
 } from 'routing-controllers';
 import { Service } from 'typedi';
-import { LoginDto, CreateUserAuthDto } from '@apps/auth/dtos/auth';
-import { UserRole } from '@shared/type';
-import { AuthService } from '@apps/auth/services/auth.service';
 
 @Service()
 @JsonController()
@@ -21,9 +22,9 @@ export class AuthController {
   }
 
   @Delete('/logout')
-  @Authorized()
-  async logout() {
-    return true;
+  @Authorized([UserRole.CUSTOMER, UserRole.MANAGER])
+  async logout(@CurrentUser() user) {
+    return this.authService.logout(user.userId);
   }
 
   @Post('/sys/new-user-auth')

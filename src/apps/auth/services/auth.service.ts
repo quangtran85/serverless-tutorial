@@ -1,13 +1,13 @@
-import { Service } from 'typedi';
-import { TokenRepository } from '../repositories/token.repository';
-import { UserAuthRepository } from '../repositories/user-auth.repository';
-import { ResourceDataOutput, UserRole } from '@shared/type';
-import * as bcrypt from 'bcryptjs';
+import { Errors } from '@apps/auth/configs/errors';
+import { UserAuth } from '@apps/auth/models/user-auth';
+import { TokenRepository } from '@apps/auth/repositories/token.repository';
+import { UserAuthRepository } from '@apps/auth/repositories/user-auth.repository';
 import { AppException } from '@shared/libs/exception';
-import { Errors } from '../configs/errors';
-import { UserAuth } from '../models/user-auth';
-import * as moment from 'moment-timezone';
 import { generateJwtToken } from '@shared/libs/jwt-utils';
+import { ResourceDataOutput, TokenStatus, UserRole } from '@shared/type';
+import * as bcrypt from 'bcryptjs';
+import * as moment from 'moment-timezone';
+import { Service } from 'typedi';
 
 export type CreateUserAuthInput = {
   userId: string;
@@ -29,6 +29,10 @@ export type LoginOutput = {
 export type LoginCheckOutput = {
   userId: string;
   role: UserRole;
+};
+
+export type LogoutOutput = {
+  isLoggedOut: boolean;
 };
 
 @Service()
@@ -112,11 +116,23 @@ export class AuthService {
       accessToken: accessToken,
       refreshToken: refreshToken,
       expired: moment().add('1h').toDate(),
+      status: TokenStatus.ACTIVE,
     });
 
     return {
       accessToken: token.accessToken,
       refreshToken: token.refreshToken,
     };
+  }
+
+  async logout(userId: string): Promise<LogoutOutput> {
+    const isUpdated = await this.tokenRepository.update(
+      {
+        userId: userId,
+        status: TokenStatus.ACTIVE,
+      },
+      { status: TokenStatus.INACTIVE },
+    );
+    return { isLoggedOut: isUpdated };
   }
 }

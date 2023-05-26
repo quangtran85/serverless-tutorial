@@ -1,6 +1,6 @@
-import { prop, getModelForClass, modelOptions } from '@typegoose/typegoose';
 import { BaseModel } from '@shared/data/mongodb/base.model';
 import { UserRole } from '@shared/type';
+import { getModelForClass, modelOptions, prop } from '@typegoose/typegoose';
 
 @modelOptions({ schemaOptions: { collection: 'user-auth' } })
 export class UserAuth extends BaseModel<UserAuth> {

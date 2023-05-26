@@ -1,27 +1,31 @@
 import { Errors } from '@apps/account/configs/errors';
-import { AppException } from '@shared/libs/exception';
 import { UserRepository } from '@apps/account/repositories/user.repository';
+import { AppException } from '@shared/libs/exception';
 import {
   GetResourcesInput,
+  ResourceDataOutput,
   ResourceOuput,
   ResourcesPaginateOuput,
-  ResourceDataOutput,
   UserRole,
 } from '@shared/type';
 import { Service } from 'typedi';
 import { AuthService } from './auth.service';
 
 export type GetUsersInput = GetResourcesInput & { keyword?: string };
+
 export type GetUsersOuput = ResourcesPaginateOuput<UserOutput>;
+
 export type UserOutput = ResourceOuput & {
   username: string;
   firstName: string;
   lastName: string;
   email: string;
   postal?: string;
+  role?: UserRole;
   isMember?: boolean;
   gender?: string;
 };
+
 export type CreateUserInput = {
   username: string;
   password: string;
@@ -29,9 +33,11 @@ export type CreateUserInput = {
   lastName: string;
   email?: string;
   postal?: string;
+  role?: UserRole;
   isMember?: boolean;
   gender?: string;
 };
+
 export type UpdateUserInput = {
   firstName?: string;
   lastName?: string;
@@ -78,6 +84,7 @@ export class UserService {
         email: result.email,
         lastName: result.lastName,
         firstName: result.firstName,
+        isMember: result.isMember,
         createdAt: result.createdAt,
         updatedAt: result.updatedAt,
       },
@@ -98,9 +105,9 @@ export class UserService {
     const entity = await this.userRepository.createGet(data);
     await this.authService.createUserAuth({
       userId: entity.id,
-      role: UserRole.CUSTOMER,
       username: data.username,
       password: data?.password,
+      role: UserRole.CUSTOMER,
     });
 
     return {
@@ -111,6 +118,7 @@ export class UserService {
         lastName: entity.lastName,
         firstName: entity.firstName,
         postal: entity.postal,
+        role: entity.role,
         isMember: entity.isMember,
         createdAt: entity.createdAt,
         updatedAt: entity.updatedAt,
@@ -119,6 +127,6 @@ export class UserService {
   }
 
   async update(id: string, data: UpdateUserInput) {
-    return this.userRepository.update(id, { ...data }, { new: true });
+    return this.userRepository.updateById(id, { ...data }, { new: true });
   }
 }
