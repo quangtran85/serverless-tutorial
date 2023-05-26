@@ -26,5 +26,5 @@ export class CustomerRegisterDto {
   zipCode: string;
 
   @IsOptional()
-  isRemember: boolean;
+  isMember: boolean;
 }

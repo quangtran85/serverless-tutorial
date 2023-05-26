@@ -10,19 +10,19 @@ export class User extends BaseModel<User> {
   public email: string;
 
   @prop({ required: false, limit: 100 })
-  public address: string;
+  public address?: string;
 
   @prop({ required: false, limit: 100 })
-  public city: string;
+  public city?: string;
 
   @prop({ required: false, limit: 100 })
-  public state: string;
+  public state?: string;
 
   @prop({ required: false })
-  public zipCode: string;
+  public zipCode?: string;
 
   @prop({ required: false })
-  public isRemember: boolean;
+  public isRemember?: boolean;
 
 
   toEntity(user = new User()): User {

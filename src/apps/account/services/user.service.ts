@@ -20,7 +20,7 @@ export type UserOutput = ResourceOuput & {
   city: string;
   state: string;
   zipCode: string;
-  isRemember: boolean;
+  isMember: boolean;
 };
 export type CreateUserInput = {
   username: string;
@@ -30,7 +30,7 @@ export type CreateUserInput = {
   city: string;
   state: string;
   zipCode: string;
-  isRemember:boolean;
+  isMember:boolean;
 };
 export type UpdateUserInput = {
   firstName?: string;
@@ -112,7 +112,7 @@ export class UserService {
         city: entity.city,
         state: entity.state,
         zipCode: entity.zipCode,
-        isRemember: entity.isRemember,
+        isMember: entity.isMember,
         createdAt: entity.createdAt,
         updatedAt: entity.updatedAt,
       },
