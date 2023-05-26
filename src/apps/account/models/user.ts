@@ -22,7 +22,7 @@ export class User extends BaseModel<User> {
   public zipCode?: string;
 
   @prop({ required: false })
-  public isRemember?: boolean;
+  public isMember?: boolean;
 
 
   toEntity(user = new User()): User {
@@ -32,7 +32,7 @@ export class User extends BaseModel<User> {
     user.city = this.city || '';
     user.state = this.state || '';
     user.zipCode = this.zipCode || '' ;
-    user.isRemember = this.isRemember || false ;
+    user.isMember = this.isMember || false ;
 
     return user;
   }

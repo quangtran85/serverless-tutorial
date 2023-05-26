@@ -26,11 +26,11 @@ export type CreateUserInput = {
   username: string;
   password: string;
   email: string;
-  address: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  isMember:boolean;
+  address?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+  isMember?:boolean;
 };
 export type UpdateUserInput = {
   firstName?: string;

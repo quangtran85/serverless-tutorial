@@ -14,17 +14,17 @@ export class CustomerRegisterDto {
   email: string;
 
   @IsOptional()
-  address: string;
+  address?: string;
 
   @IsOptional()
-  city: string;
+  city?: string;
 
   @IsOptional()
-  state: string;
+  state?: string;
 
   @IsOptional()
-  zipCode: string;
+  zipCode?: string;
 
   @IsOptional()
-  isMember: boolean;
+  isMember?: boolean;
 }
