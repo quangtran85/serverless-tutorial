@@ -1,4 +1,3 @@
-import { BaseModel } from './base.model';
 import { PaginateType } from '@shared/type';
 import { ReturnModelType } from '@typegoose/typegoose';
 import {
@@ -9,6 +8,7 @@ import {
   SaveOptions,
   Types,
 } from 'mongoose';
+import { BaseModel } from './base.model';
 
 export type TData<T> = { [Key in keyof T]?: any };
 export type PaginatedResult<T> = {
@@ -157,7 +157,7 @@ export abstract class BaseRepository<T extends BaseModel<T>> {
   }
 
   /**
-   * Update
+   * Update one row
    *
    * @param {string} id
    * @param {TData<T>} data
@@ -165,7 +165,7 @@ export abstract class BaseRepository<T extends BaseModel<T>> {
    *
    * @returns {Promise<boolean>}
    */
-  async update(
+  async updateById(
     id: string,
     data: TData<T>,
     options?: QueryOptions,
@@ -177,5 +177,28 @@ export abstract class BaseRepository<T extends BaseModel<T>> {
     );
 
     return modifiedCount === 1;
+  }
+
+  /**
+   * Update
+   *
+   * @param {FilterQuery<T>} conditions
+   * @param {TData<T>} data
+   * @param {QueryOptions} options
+   *
+   * @returns {Promise<boolean>}
+   */
+  async update(
+    conditions: FilterQuery<T>,
+    data: TData<T>,
+    options?: QueryOptions,
+  ): Promise<boolean> {
+    const { modifiedCount } = await this.model.updateMany(
+      conditions,
+      data,
+      options,
+    );
+
+    return modifiedCount > 0;
   }
 }

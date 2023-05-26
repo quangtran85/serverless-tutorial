@@ -34,3 +34,8 @@ export enum UserRole {
   CUSTOMER = 'customer',
   GUEST = 'guest',
 }
+
+export enum TokenStatus {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+}

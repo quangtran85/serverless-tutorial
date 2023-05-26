@@ -1,12 +1,13 @@
+import { TokenRepository } from '@apps/auth/repositories/token.repository';
+import { AppException } from '@shared/libs/exception';
+import { verifyJwtToken } from '@shared/libs/jwt-utils';
+import { connectDb } from '@shared/providers/mongodb';
+import { TokenStatus } from '@shared/type';
 import {
+  APIGatewayRequestAuthorizerEvent,
   AuthResponse,
   PolicyDocument,
-  APIGatewayRequestAuthorizerEvent,
 } from 'aws-lambda';
-import { connectDb } from '@shared/providers/mongodb';
-import { TokenRepository } from '../repositories/token.repository';
-import { verifyJwtToken } from '@shared/libs/jwt-utils';
-import { AppException } from '@shared/libs/exception';
 import * as moment from 'moment-timezone';
 
 // Generate policy to allow this user on this API:
@@ -77,6 +78,7 @@ const loginCheck = async (userId: string, token: string) => {
     expired: {
       $lte: moment().toDate(),
     },
+    status: TokenStatus.ACTIVE,
   });
 
   if (!tokenData) {
