@@ -81,6 +81,17 @@ functions:
     environment:
       MONGODB_URL: ${file(./config.${self:custom.stage}.json):AUTH_MONGODB_URL}
 
+  storeService:
+    handler: src/apps/store/app.handler
+    events:
+      - httpApi:
+          method: "*"
+          path: /store/{proxy+}
+          authorizer:
+            name: authorizerFunc
+    environment:
+      MONGODB_URL: ${file(./config.${self:custom.stage}.json):STORE_MONGODB_URL}
+
   authorizerFunc:
     handler: src/apps/auth/handlers/authorizer.handler
     timeout: 60

@@ -93,7 +93,7 @@ export abstract class BaseRepository<T extends BaseModel<T>> {
           {
             $facet: {
               metadata: [{ $count: 'total' }],
-              docs: [{ $skip: paginate.skip }, { $limit: paginate.limit }],
+              docs: [{ $skip: +paginate.skip }, { $limit: +paginate.limit }],
             },
           },
         ],
