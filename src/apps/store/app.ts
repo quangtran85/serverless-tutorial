@@ -3,6 +3,7 @@ import * as serverless from 'serverless-http';
 import { createExpressServer, useContainer } from 'routing-controllers';
 import { Container } from 'typedi';
 import { BookController } from './controllers/book.controller';
+import { PromotionController } from './controllers/promotion.controller';
 import { connectDb } from '@shared/providers/mongodb';
 import { HttpErrorHandler } from '@shared/middlewares/http-error-handler.middleware';
 import authorizationChecker from '@shared/auth/authorization-checker';
@@ -12,7 +13,7 @@ useContainer(Container);
 export const application = createExpressServer({
   routePrefix: '/store',
   defaultErrorHandler: false,
-  controllers: [BookController],
+  controllers: [BookController, PromotionController],
   middlewares: [HttpErrorHandler],
   authorizationChecker: authorizationChecker,
   currentUserChecker: currentUserChecker,

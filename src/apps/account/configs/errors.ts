@@ -9,4 +9,9 @@ export const Errors = {
     errorCode: 'AlreadyExists',
     message: 'The username is already existed.',
   },
+  COUPON_CODE_IS_EXISTED: {
+    httpCode: 409,
+    errorCode: 'AlreadyExists',
+    message: 'The coupon code is already existed.',
+  },
 };
