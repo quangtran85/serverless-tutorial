@@ -8,6 +8,7 @@ import {
   ResourceDataOutput,
   UserRole,
 } from '@shared/type';
+import * as bcrypt from 'bcryptjs';
 import { Service } from 'typedi';
 import { AuthService } from './auth.service';
 
@@ -15,18 +16,27 @@ export type GetUsersInput = GetResourcesInput & { keyword?: string };
 export type GetUsersOuput = ResourcesPaginateOuput<UserOutput>;
 export type UserOutput = ResourceOuput & {
   username: string;
-  firstName: string;
-  lastName: string;
   email: string;
   gender?: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  isMember: boolean;
 };
 export type CreateUserInput = {
   username: string;
   password: string;
+  rePassword: string;
   firstName: string;
   lastName: string;
   email?: string;
   gender?: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  isMember: boolean;
 };
 export type UpdateUserInput = {
   firstName?: string;
@@ -50,8 +60,6 @@ export class UserService {
           ({
             id: item.id,
             email: item.email,
-            lastName: item.lastName,
-            firstName: item.firstName,
             createdAt: item.createdAt,
             updatedAt: item.updatedAt,
           } as UserOutput),
@@ -72,8 +80,11 @@ export class UserService {
         id: result.id,
         username: result.username,
         email: result.email,
-        lastName: result.lastName,
-        firstName: result.firstName,
+        address: result.address,
+        city: result.city,
+        state: result.state,
+        zipCode: result.zipCode,
+        isMember: result.isMember,
         createdAt: result.createdAt,
         updatedAt: result.updatedAt,
       },
@@ -83,6 +94,13 @@ export class UserService {
   async createGet(
     data: CreateUserInput,
   ): Promise<ResourceDataOutput<UserOutput>> {
+    const password = data.password;
+    const rePassword = data.rePassword;
+    if (password !== rePassword) {
+      const { errorCode, message, httpCode } =
+        Errors.PASSWORD_AND_REPASSWORD_IS_NOT_THE_SAME;
+      throw new AppException(errorCode, message, httpCode);
+    }
     const isExisted = await this.userRepository.findOne({
       username: data.username,
     });
@@ -104,8 +122,11 @@ export class UserService {
         id: entity.id,
         email: entity.email,
         username: entity.username,
-        lastName: entity.lastName,
-        firstName: entity.firstName,
+        address: entity.address,
+        city: entity.city,
+        state: entity.state,
+        zipCode: entity.zipCode,
+        isMember: entity.isMember,
         createdAt: entity.createdAt,
         updatedAt: entity.updatedAt,
       },

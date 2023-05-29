@@ -9,19 +9,35 @@ export class User extends BaseModel<User> {
   public username: string;
 
   @prop({ required: true, limit: 50 })
-  public firstName: string;
-
-  @prop({ required: true, limit: 50 })
-  public lastName: string;
+  public password: string;
 
   @prop({ required: false, limit: 100 })
   public email: string;
 
+  @prop({ required: true, limit: 100 })
+  public address: string;
+
+  @prop({ required: true, limit: 50 })
+  public city: string;
+
+  @prop({ required: true, limit: 50 })
+  public state: string;
+
+  @prop({ required: true, limit: 50 })
+  public zipCode: string;
+
+  @prop({ default: false })
+  public isMember: boolean;
+
   toEntity(user = new User()): User {
     user = this.toBaseEntity(user);
-    user.firstName = this.firstName;
-    user.lastName = this.lastName;
     user.email = this.email;
+    user.password = this.password;
+    user.address = this.address;
+    user.city = this.city;
+    user.state = this.state;
+    user.zipCode = this.zipCode;
+    user.isMember = this.isMember;
     return user;
   }
 }

@@ -63,7 +63,7 @@ export class AuthService {
     }
 
     return {
-      data: await this._genereateToken(userAuth),
+      data: await this._generateToken(userAuth),
     };
   }
 
@@ -98,7 +98,7 @@ export class AuthService {
    * @param {UserAuth} data
    * @returns {Promise<{ accessToken: string; refreshToken: string }>}
    */
-  async _genereateToken(
+  async _generateToken(
     data: UserAuth,
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const [accessToken, refreshToken] = await Promise.all([
