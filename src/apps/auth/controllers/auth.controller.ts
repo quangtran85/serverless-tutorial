@@ -2,8 +2,8 @@ import {
   JsonController,
   Post,
   Body,
-  Delete,
   Authorized,
+  HeaderParam,
 } from 'routing-controllers';
 import { Service } from 'typedi';
 import { LoginDto, CreateUserAuthDto } from '@apps/auth/dtos/auth';
@@ -20,10 +20,11 @@ export class AuthController {
     return this.authService.login(data);
   }
 
-  @Delete('/logout')
-  @Authorized()
-  async logout() {
-    return true;
+  @Post('/logout')
+  @Authorized([UserRole.MANAGER, UserRole.CUSTOMER])
+  async logout(@HeaderParam('authorization') authToken: string) {
+    const token = authToken.split(' ')[1] ?? '';
+    return this.authService.logout(token);
   }
 
   @Post('/sys/new-user-auth')

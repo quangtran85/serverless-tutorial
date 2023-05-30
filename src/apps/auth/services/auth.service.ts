@@ -68,6 +68,15 @@ export class AuthService {
   }
 
   /**
+   * logout
+   * @param data
+   */
+  async logout(token: string): Promise<boolean> {
+    await this.tokenRepository.deleteOne({ accessToken: token });
+    return true;
+  }
+
+  /**
    * Proceed to login system
    *
    * @param {LoginInput} data

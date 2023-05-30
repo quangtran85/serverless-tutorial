@@ -178,4 +178,15 @@ export abstract class BaseRepository<T extends BaseModel<T>> {
 
     return modifiedCount === 1;
   }
+
+  /**
+   * delete one
+   * @param filter
+   *
+   * @returns {Promise<void>}
+   */
+  async deleteOne(filter: FilterQuery<T>): Promise<boolean> {
+    await this.model.deleteOne(filter).exec();
+    return true;
+  }
 }
