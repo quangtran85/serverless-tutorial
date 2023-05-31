@@ -43,7 +43,7 @@ export class PromotionService {
       },
     };
   }
-  generateRandomString = (length) => {
+  generateRandomString(length: number): string {
     const chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
     const randomArray = Array.from(
