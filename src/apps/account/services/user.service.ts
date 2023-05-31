@@ -3,8 +3,8 @@ import { AppException } from '@shared/libs/exception';
 import { UserRepository } from '@apps/account/repositories/user.repository';
 import {
   GetResourcesInput,
-  ResourceOuput,
-  ResourcesPaginateOuput,
+  ResourceOutput,
+  ResourcesPaginateOutput,
   ResourceDataOutput,
   UserRole,
 } from '@shared/type';
@@ -12,8 +12,8 @@ import { Service } from 'typedi';
 import { AuthService } from './auth.service';
 
 export type GetUsersInput = GetResourcesInput & { keyword?: string };
-export type GetUsersOutput = ResourcesPaginateOuput<UserOutput>;
-export type UserOutput = ResourceOuput & {
+export type GetUsersOutput = ResourcesPaginateOutput<UserOutput>;
+export type UserOutput = ResourceOutput & {
   username: string;
   email: string;
   address?: string;

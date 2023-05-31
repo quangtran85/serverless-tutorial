@@ -85,15 +85,22 @@ export abstract class BaseRepository<T extends BaseModel<T>> {
     paginate: PaginateType,
     options?: AggregateOptions,
   ): Promise<PaginatedResult<T>> {
+    let sort = undefined;
+    if (paginate?.sort) {
+      sort = {};
+      for (const field in paginate.sort) {
+        sort[field] = +paginate.sort[field];
+      }
+    }
     const result = await this.model
       .aggregate(
         [
           { $match: filter },
-          { $sort: paginate?.sort ?? { createdAt: 1 } },
+          { $sort: sort ?? { createdAt: 1 } },
           {
             $facet: {
               metadata: [{ $count: 'total' }],
-              docs: [{ $skip: paginate.skip }, { $limit: paginate.limit }],
+              docs: [{ $skip: +paginate.skip }, { $limit: +paginate.limit }],
             },
           },
         ],
