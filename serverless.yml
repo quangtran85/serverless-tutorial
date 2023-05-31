@@ -85,6 +85,12 @@ functions:
     handler: src/apps/store/app.handler
     events:
       - httpApi:
+          method: "GET"
+          path: /store/book/all
+      - httpApi:
+          method: "GET"
+          path: /store/book/{id}
+      - httpApi:
           method: "*"
           path: /store/{proxy+}
           authorizer:
