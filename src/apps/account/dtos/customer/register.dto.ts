@@ -9,15 +9,22 @@ export class CustomerRegisterDto {
   @MaxLength(50)
   password: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsEmail({ allow_utf8_local_part: false })
-  email?: string;
+  email: string;
 
-  @IsNotEmpty()
-  @MaxLength(100)
-  firstName: string;
+  @IsOptional()
+  address?: string;
 
-  @IsNotEmpty()
-  @MaxLength(100)
-  lastName: string;
+  @IsOptional()
+  city?: string;
+
+  @IsOptional()
+  state?: string;
+
+  @IsOptional()
+  zipCode?: string;
+
+  @IsOptional()
+  isMember?: boolean;
 }

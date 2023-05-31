@@ -137,7 +137,7 @@ export class AuthService {
     role: string;
   }): Promise<{ accessToken: string; refreshToken: string }> {
     const [accessToken, refreshToken] = await Promise.all([
-      generateJwtToken({ userId, role }, '30s'),
+      generateJwtToken({ userId, role }, '1h'),
       generateJwtToken({ userId }, '7d'),
     ]);
 

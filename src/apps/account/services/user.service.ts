@@ -3,8 +3,8 @@ import { AppException } from '@shared/libs/exception';
 import { UserRepository } from '@apps/account/repositories/user.repository';
 import {
   GetResourcesInput,
-  ResourceOuput,
-  ResourcesPaginateOuput,
+  ResourceOutput,
+  ResourcesPaginateOutput,
   ResourceDataOutput,
   UserRole,
 } from '@shared/type';
@@ -12,21 +12,25 @@ import { Service } from 'typedi';
 import { AuthService } from './auth.service';
 
 export type GetUsersInput = GetResourcesInput & { keyword?: string };
-export type GetUsersOuput = ResourcesPaginateOuput<UserOutput>;
-export type UserOutput = ResourceOuput & {
+export type GetUsersOutput = ResourcesPaginateOutput<UserOutput>;
+export type UserOutput = ResourceOutput & {
   username: string;
-  firstName: string;
-  lastName: string;
   email: string;
-  gender?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+  isMember?: boolean;
 };
 export type CreateUserInput = {
   username: string;
   password: string;
-  firstName: string;
-  lastName: string;
-  email?: string;
-  gender?: string;
+  email: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+  isMember?:boolean;
 };
 export type UpdateUserInput = {
   firstName?: string;
@@ -96,16 +100,19 @@ export class UserService {
       userId: entity.id,
       role: UserRole.CUSTOMER,
       username: data.username,
-      password: data?.password,
+      password: data.password,
     });
 
     return {
       data: {
         id: entity.id,
-        email: entity.email,
         username: entity.username,
-        lastName: entity.lastName,
-        firstName: entity.firstName,
+        email: entity.email,
+        address: entity.address,
+        city: entity.city,
+        state: entity.state,
+        zipCode: entity.zipCode,
+        isMember: entity.isMember,
         createdAt: entity.createdAt,
         updatedAt: entity.updatedAt,
       },
