@@ -4,4 +4,9 @@ export const Errors = {
     errorCode: 'NotFound',
     message: 'The resource does not found.',
   },
+  COUPON_CODE_IS_EXISTED: {
+    httpCode: 409,
+    errorCode: 'AlreadyExists',
+    message: 'The coupon code is already existed.',
+  },
 };

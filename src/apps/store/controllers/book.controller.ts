@@ -20,13 +20,11 @@ export class BookController {
   constructor(private readonly bookService: BookService) {}
 
   @Get('/all')
-  @Authorized(UserRole.MANAGER)
   async getAll(@QueryParams() params: PaginateType) {
     return this.bookService.getAll(params);
   }
 
   @Get('/:id')
-  @Authorized(UserRole.MANAGER)
   getById(@Param('id') id: string) {
     return this.bookService.getById(id);
   }

@@ -1,7 +1,7 @@
 import { PromotionRepository } from '@apps/store/repositories/promotion.repository';
 import { ResourceOutput, ResourceDataOutput } from '@shared/type';
 import { Service } from 'typedi';
-import { Errors } from '@apps/account/configs/errors';
+import { Errors } from '@apps/store/configs/errors';
 import { AppException } from '@shared/libs/exception';
 
 export type PromotionOutput = ResourceOutput & {
