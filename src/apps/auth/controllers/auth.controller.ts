@@ -2,6 +2,7 @@ import {
   JsonController,
   Post,
   Body,
+  Delete,
   Authorized,
   HeaderParam,
 } from 'routing-controllers';
@@ -20,7 +21,7 @@ export class AuthController {
     return this.authService.login(data);
   }
 
-  @Post('/logout')
+  @Delete('/logout')
   @Authorized([UserRole.MANAGER, UserRole.CUSTOMER])
   async logout(@HeaderParam('authorization') authToken: string) {
     const token = authToken.split(' ')[1] ?? '';
