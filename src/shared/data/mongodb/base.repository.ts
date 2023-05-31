@@ -85,7 +85,7 @@ export abstract class BaseRepository<T extends BaseModel<T>> {
     paginate: PaginateType,
     options?: AggregateOptions,
   ): Promise<PaginatedResult<T>> {
-    const sort = {};
+    const sort = undefined;
     if (paginate?.sort) {
       for (const field in paginate.sort) {
         sort[field] = +paginate.sort[field];
