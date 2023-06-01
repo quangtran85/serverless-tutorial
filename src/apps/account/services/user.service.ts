@@ -3,8 +3,8 @@ import { AppException } from '@shared/libs/exception';
 import { UserRepository } from '@apps/account/repositories/user.repository';
 import {
   GetResourcesInput,
-  ResourceOuput,
-  ResourcesPaginateOuput,
+  ResourceOutput,
+  ResourcesPaginateOutput,
   ResourceDataOutput,
   UserRole,
 } from '@shared/type';
@@ -12,8 +12,8 @@ import { Service } from 'typedi';
 import { AuthService } from './auth.service';
 
 export type GetUsersInput = GetResourcesInput & { keyword?: string };
-export type GetUsersOuput = ResourcesPaginateOuput<UserOutput>;
-export type UserOutput = ResourceOuput & {
+export type GetUsersOutput = ResourcesPaginateOutput<UserOutput>;
+export type UserOutput = ResourceOutput & {
   username: string;
   firstName: string;
   lastName: string;
@@ -42,7 +42,7 @@ export class UserService {
     private readonly authService: AuthService,
   ) {}
 
-  async getAll(data: GetUsersInput): Promise<GetUsersOuput> {
+  async getAll(data: GetUsersInput): Promise<GetUsersOutput> {
     const result = await this.userRepository.findAndCount({}, { ...data });
     return {
       data: result?.data.map(
