@@ -25,6 +25,7 @@ provider:
           Resource:
             - 'arn:aws:lambda:${self:provider.region}:${self:custom.awsAccountId}:function:${self:service}-${self:custom.stage}-accountService'
             - 'arn:aws:lambda:${self:provider.region}:${self:custom.awsAccountId}:function:${self:service}-${self:custom.stage}-authService'
+            - 'arn:aws:lambda:${self:provider.region}:${self:custom.awsAccountId}:function:${self:service}-${self:custom.stage}-bookService'
 
   environment:
     AWS_ACCOUNT_ID: ${file(./config.${self:custom.stage}.json):AWS_ACCOUNT_ID}
@@ -80,6 +81,20 @@ functions:
             name: authorizerFunc
     environment:
       MONGODB_URL: ${file(./config.${self:custom.stage}.json):AUTH_MONGODB_URL}
+
+  bookService:
+    handler: src/apps/book/app.handler
+    events:
+    - httpApi:
+          method: "GET"
+          path: /inventory/book
+      - httpApi:
+          method: "*"
+          path: /inventory/{proxy+}
+          authorizer: 
+            name: authorizerFunc
+    environment:
+      MONGODB_URL: ${file(./config.${self:custom.stage}.json):INVENTORY_MONGODB_URL}
 
   authorizerFunc:
     handler: src/apps/auth/handlers/authorizer.handler
