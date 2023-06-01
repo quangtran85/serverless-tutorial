@@ -5,7 +5,6 @@ import { ResourceDataOutput, UserRole } from '@shared/type';
 import * as bcrypt from 'bcryptjs';
 import { AppException } from '@shared/libs/exception';
 import { Errors } from '../configs/errors';
-import { UserAuth } from '../models/user-auth';
 import * as moment from 'moment-timezone';
 import { generateJwtToken, verifyJwtToken } from '@shared/libs/jwt-utils';
 
@@ -51,7 +50,7 @@ export class AuthService {
    * Proceed to login system
    *
    * @param {LoginInput} data
-   * @returns {Promise<LoginOutput>}
+   * @returns {Promise<ResourceDataOutput>}
    */
   async login(data: LoginInput): Promise<ResourceDataOutput<TokenOutput>> {
     const userAuth = await this.userAuthRepository.findOne({
@@ -89,8 +88,7 @@ export class AuthService {
     });
 
     return {
-      data: await this._generateToken(
-        {
+      data: await this._generateToken({
         userId: token?.userId as string,
         role: token?.role as string,
       }),
@@ -100,8 +98,8 @@ export class AuthService {
   /**
    * Proceed to login system
    *
-   * @param {LoginInput} data
-   * @returns {Promise<LoginOutput>}
+   * @param token
+   * @returns {Promise<LoginCheckOutput>}
    */
   async loginCheck(token: string): Promise<LoginCheckOutput> {
     const tokenData = await this.tokenRepository.findOne({
@@ -127,7 +125,6 @@ export class AuthService {
    *
    * @param {UserAuth} data
    * @returns {Promise<{ accessToken: string; refreshToken: string }>}
-   * @param withRefreshToken
    */
   async _generateToken({
     userId,
@@ -146,7 +143,7 @@ export class AuthService {
       role: role,
       accessToken: accessToken,
       refreshToken: refreshToken,
-      expired: moment().add('1h').toDate(),
+      expired: moment().add(1, 'hour').toDate(),
     });
 
     return {
