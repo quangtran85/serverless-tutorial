@@ -63,7 +63,6 @@ export async function handler(
       authData,
     );
   } catch (error) {
-    console.log(error);
     throw new Error('Unauthorized');
   }
 }
@@ -75,7 +74,7 @@ const loginCheck = async (userId: string, token: string) => {
     accessToken: token,
     userId: userId,
     expired: {
-      $lte: moment().toDate(),
+      $gte: moment().toDate(),
     },
   });
 

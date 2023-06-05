@@ -47,7 +47,7 @@ custom:
   #   sns-endpoint: ${self:provider.environment.AWS_SNS_ENDPOINT}
 
   serverless-offline-watcher:
-    - path: 
+    - path:
       - src/**/*.(js|ts)
       command: echo "There were files has modified!"
 
@@ -71,13 +71,13 @@ functions:
     handler: src/apps/auth/app.handler
     events:
       - httpApi:
-          method: "POST"
-          path: /auth/login
+          method: "DELETE"
+          path: /auth/logout
+          authorizer:
+            name: authorizerFunc
       - httpApi:
           method: "*"
           path: /auth/{proxy+}
-          authorizer: 
-            name: authorizerFunc
     environment:
       MONGODB_URL: ${file(./config.${self:custom.stage}.json):AUTH_MONGODB_URL}
 

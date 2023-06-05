@@ -30,7 +30,7 @@ export type CreateUserInput = {
   city?: string;
   state?: string;
   zipCode?: string;
-  isMember?:boolean;
+  isMember?: boolean;
 };
 export type UpdateUserInput = {
   firstName?: string;
@@ -76,8 +76,11 @@ export class UserService {
         id: result.id,
         username: result.username,
         email: result.email,
-        lastName: result.lastName,
-        firstName: result.firstName,
+        address: result.address,
+        city: result.city,
+        state: result.state,
+        zipCode: result.zipCode,
+        isMember: result.isMember,
         createdAt: result.createdAt,
         updatedAt: result.updatedAt,
       },

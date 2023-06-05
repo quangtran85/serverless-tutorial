@@ -24,15 +24,15 @@ export class User extends BaseModel<User> {
   @prop({ required: false })
   public isMember?: boolean;
 
-
   toEntity(user = new User()): User {
     user = this.toBaseEntity(user);
+    user.username = this.username;
     user.email = this.email;
     user.address = this.address || '';
     user.city = this.city || '';
     user.state = this.state || '';
-    user.zipCode = this.zipCode || '' ;
-    user.isMember = this.isMember || false ;
+    user.zipCode = this.zipCode || '';
+    user.isMember = this.isMember || false;
 
     return user;
   }

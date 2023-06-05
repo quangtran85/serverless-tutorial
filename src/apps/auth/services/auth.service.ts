@@ -5,9 +5,8 @@ import { ResourceDataOutput, UserRole } from '@shared/type';
 import * as bcrypt from 'bcryptjs';
 import { AppException } from '@shared/libs/exception';
 import { Errors } from '../configs/errors';
-import { UserAuth } from '../models/user-auth';
 import * as moment from 'moment-timezone';
-import { generateJwtToken } from '@shared/libs/jwt-utils';
+import { generateJwtToken, verifyJwtToken } from '@shared/libs/jwt-utils';
 
 export type CreateUserAuthInput = {
   userId: string;
@@ -21,7 +20,11 @@ export type LoginInput = {
   password: string;
 };
 
-export type LoginOutput = {
+export type RefreshInput = {
+  refreshToken: string;
+};
+
+export type TokenOutput = {
   accessToken: string;
   refreshToken: string;
 };
@@ -47,9 +50,9 @@ export class AuthService {
    * Proceed to login system
    *
    * @param {LoginInput} data
-   * @returns {Promise<LoginOutput>}
+   * @returns {Promise<ResourceDataOutput>}
    */
-  async login(data: LoginInput): Promise<ResourceDataOutput<LoginOutput>> {
+  async login(data: LoginInput): Promise<ResourceDataOutput<TokenOutput>> {
     const userAuth = await this.userAuthRepository.findOne({
       username: data.username,
     });
@@ -63,7 +66,37 @@ export class AuthService {
     }
 
     return {
-      data: await this._genereateToken(userAuth),
+      data: await this._generateToken(userAuth),
+    };
+  }
+
+  /**
+   * Refresh token
+   *
+   * @param {RefreshInput} data
+   * @returns {Promise<TokenOutput>}
+   */
+  async refresh(data: RefreshInput): Promise<ResourceDataOutput<TokenOutput>> {
+    const verified: any = verifyJwtToken(data.refreshToken);
+    if (!verified?.userId) {
+      const { errorCode, message, httpCode } = Errors.INVALID_REFRESH_TOKEN;
+      throw new AppException(errorCode, message, httpCode);
+    }
+
+    const token = await this.tokenRepository.findOne({
+      refreshToken: data.refreshToken,
+    });
+
+    if (!token) {
+      const { errorCode, message, httpCode } = Errors.INVALID_REFRESH_TOKEN;
+      throw new AppException(errorCode, message, httpCode);
+    }
+
+    return {
+      data: await this._generateToken({
+        userId: token?.userId as string,
+        role: token?.role as string,
+      }),
     };
   }
 
@@ -79,8 +112,8 @@ export class AuthService {
   /**
    * Proceed to login system
    *
-   * @param {LoginInput} data
-   * @returns {Promise<LoginOutput>}
+   * @param token
+   * @returns {Promise<LoginCheckOutput>}
    */
   async loginCheck(token: string): Promise<LoginCheckOutput> {
     const tokenData = await this.tokenRepository.findOne({
@@ -107,20 +140,24 @@ export class AuthService {
    * @param {UserAuth} data
    * @returns {Promise<{ accessToken: string; refreshToken: string }>}
    */
-  async _genereateToken(
-    data: UserAuth,
-  ): Promise<{ accessToken: string; refreshToken: string }> {
+  async _generateToken({
+    userId,
+    role,
+  }: {
+    userId: string;
+    role: string;
+  }): Promise<{ accessToken: string; refreshToken: string }> {
     const [accessToken, refreshToken] = await Promise.all([
-      generateJwtToken({ userId: data.userId, role: data.role }, '1h'),
-      generateJwtToken({ userId: data.userId }, '30d'),
+      generateJwtToken({ userId, role }, '1h'),
+      generateJwtToken({ userId }, '7d'),
     ]);
 
     const token = await this.tokenRepository.createGet({
-      userId: data.userId,
-      role: data.role,
+      userId: userId,
+      role: role,
       accessToken: accessToken,
       refreshToken: refreshToken,
-      expired: moment().add('1h').toDate(),
+      expired: moment().add(1, 'hour').toDate(),
     });
 
     return {
