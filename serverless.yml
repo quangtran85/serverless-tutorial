@@ -88,11 +88,11 @@ functions:
     - httpApi:
           method: "GET"
           path: /inventory/book
-      - httpApi:
-          method: "*"
-          path: /inventory/{proxy+}
-          authorizer: 
-            name: authorizerFunc
+    - httpApi:
+        method: "*"
+        path: /inventory/{proxy+}
+        authorizer: 
+          name: authorizerFunc
     environment:
       MONGODB_URL: ${file(./config.${self:custom.stage}.json):INVENTORY_MONGODB_URL}
 
