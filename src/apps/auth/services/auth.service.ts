@@ -88,7 +88,8 @@ export class AuthService {
     });
 
     if (!token) {
-      throw new AppException('Unauthorized', 'Unauthorized', 403);
+      const { errorCode, message, httpCode } = Errors.INVALID_REFRESH_TOKEN;
+      throw new AppException(errorCode, message, httpCode);
     }
 
     return {
