@@ -9,4 +9,9 @@ export const Errors = {
     errorCode: 'AlreadyExists',
     message: 'The username is already existed.',
   },
+  PASSWORD_AND_REPASSWORD_IS_NOT_THE_SAME: {
+    httpCode: 409,
+    errorCode: 'E_PASSWORD_REPASSWORD_IS_NOT_THE_SAME',
+    message: 'The password and rePassword is not the same',
+  },
 };
