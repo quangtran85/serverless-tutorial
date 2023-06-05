@@ -87,6 +87,10 @@ export class AuthService {
       refreshToken: data.refreshToken,
     });
 
+    if (!token) {
+      throw new AppException('Unauthorized', 'Unauthorized', 403);
+    }
+
     return {
       data: await this._generateToken({
         userId: token?.userId as string,
