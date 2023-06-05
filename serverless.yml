@@ -71,16 +71,13 @@ functions:
     handler: src/apps/auth/app.handler
     events:
       - httpApi:
-          method: "POST"
-          path: /auth/login
-      - httpApi:
-          method: "POST"
-          path: /auth/refresh
+          method: "DELETE"
+          path: /auth/logout
+          authorizer:
+            name: authorizerFunc
       - httpApi:
           method: "*"
           path: /auth/{proxy+}
-          authorizer: 
-            name: authorizerFunc
     environment:
       MONGODB_URL: ${file(./config.${self:custom.stage}.json):AUTH_MONGODB_URL}
 
