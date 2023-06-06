@@ -2,7 +2,12 @@ import { Service } from 'typedi';
 import { BookRepository } from '../repositories/book.repository';
 import { Errors } from '@apps/book/configs/errors';
 import { AppException } from '@shared/libs/exception';
-import { ResourceDataOutput, ResourceOutput } from '@shared/type';
+import {
+  ResourceDataOutput,
+  ResourceOutput,
+  GetResourcesInput,
+  ResourcesPaginateOutput,
+} from '@shared/type';
 
 export type BookOutput = ResourceOutput & {
   id: any;
@@ -12,6 +17,17 @@ export type BookOutput = ResourceOutput & {
   stock?: number;
   stopOrder?: boolean;
   reorderThreshold?: number;
+};
+
+export type GetBookListOutput = ResourceOutput & {
+  id: any;
+  price: number;
+  title: string;
+  authorName: string;
+};
+
+export type GetBookListInput = GetResourcesInput & {
+  title?: string;
 };
 
 export type CreateBookInput = {
@@ -50,6 +66,34 @@ export class BookService {
         stopOrder: entity.stopOrder,
         reorderThreshold: entity.reorderThreshold,
       },
+    };
+  }
+
+  async getBookList(
+    data: GetBookListInput,
+  ): Promise<ResourcesPaginateOutput<GetBookListOutput>> {
+    const { title } = data;
+    let filterCondition: object = {};
+    if (title) {
+      filterCondition = { title: title };
+    }
+    console.log('filterCondition', filterCondition);
+    const result = await this.bookRepository.findAndCount(filterCondition, {
+      ...data,
+    });
+    return {
+      data: result?.data.map(
+        (item) =>
+          ({
+            id: item.id,
+            price: item.price,
+            authorName: item.authorName,
+            title: item.title,
+            createdAt: item.createdAt,
+            updatedAt: item.updatedAt,
+          } as GetBookListOutput),
+      ),
+      pagination: result.pagination,
     };
   }
 }
