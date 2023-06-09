@@ -13,6 +13,7 @@ import { BookCreateDto } from '@apps/store/dtos/book/create.dto';
 import { BookUpdateDto } from '@apps/store/dtos/book/update.dto';
 import { BookService } from '@apps/store/services/book.service';
 import { PaginateType, UserRole } from '@shared/type';
+import { BookSearchDto } from '@apps/store/dtos/book/search.dto';
 
 @Service()
 @JsonController('/book')
@@ -20,8 +21,9 @@ export class BookController {
   constructor(private readonly bookService: BookService) {}
 
   @Get('/all')
-  async getAll(@QueryParams() params: PaginateType) {
-    return this.bookService.getAll(params);
+  async getAll(@QueryParams() params: BookSearchDto & PaginateType) {
+    const { title, ...paginateParams } = params;
+    return this.bookService.getAll({ title }, paginateParams);
   }
 
   @Get('/:id')
