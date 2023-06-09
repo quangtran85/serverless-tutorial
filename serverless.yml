@@ -89,7 +89,7 @@ functions:
           authorizer:
             name: authorizerFunc
     environment:
-      MONGODB_URL: ${file(./config.${self:custom.stage}.json):AUTH_MONGODB_URL}
+      MONGODB_URL: ${file(./config.${self:custom.stage}.json):INVENTORY_MONGODB_URL}
 
   authorizerFunc:
     handler: src/apps/auth/handlers/authorizer.handler

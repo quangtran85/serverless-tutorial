@@ -6,14 +6,14 @@ import 'reflect-metadata';
 import { createExpressServer, useContainer } from 'routing-controllers';
 import * as serverless from 'serverless-http';
 import { Container } from 'typedi';
-import { InventoryController } from './controllers/inventory.controller';
+import { BookController } from './controllers/book.controller';
 
 useContainer(Container);
 
 export const application = createExpressServer({
   routePrefix: '/inventory',
   defaultErrorHandler: false,
-  controllers: [InventoryController],
+  controllers: [BookController],
   middlewares: [HttpErrorHandler],
   authorizationChecker: authorizationChecker,
   currentUserChecker: currentUserChecker,
