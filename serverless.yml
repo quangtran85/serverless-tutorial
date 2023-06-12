@@ -80,6 +80,17 @@ functions:
     environment:
       MONGODB_URL: ${file(./config.${self:custom.stage}.json):AUTH_MONGODB_URL}
 
+  inventoryService:
+    handler: src/apps/inventory/app.handler
+    events:
+      - httpApi:
+          method: "*"
+          path: /inventory/{proxy+}
+          authorizer:
+            name: authorizerFunc
+    environment:
+      MONGODB_URL: ${file(./config.${self:custom.stage}.json):INVENTORY_MONGODB_URL}
+
   authorizerFunc:
     handler: src/apps/auth/handlers/authorizer.handler
     timeout: 60
