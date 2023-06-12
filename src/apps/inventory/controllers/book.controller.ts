@@ -1,4 +1,4 @@
-import { BookCreateDto } from '@apps/inventory/dtos/book/create.dto';
+import { BookCreateDto, BookUpdateDto } from '@apps/inventory/dtos/book';
 import { BookService } from '@apps/inventory/services/book.service';
 import { UserRole } from '@shared/type';
 import {
@@ -8,6 +8,7 @@ import {
   JsonController,
   Param,
   Post,
+  Put,
 } from 'routing-controllers';
 import { Service } from 'typedi';
 
@@ -19,12 +20,17 @@ export class BookController {
   @Post('/create')
   @Authorized(UserRole.MANAGER)
   async create(@Body() data: BookCreateDto) {
-    return this.bookService.createGet(data);
+    return await this.bookService.createGet(data);
   }
 
   @Get('/detail/:id')
-  @Authorized([UserRole.MANAGER])
   async detail(@Param('id') id: string) {
-    return this.bookService.get(id);
+    return await this.bookService.get(id);
+  }
+
+  @Put('/update/:id')
+  @Authorized(UserRole.MANAGER)
+  async update(@Param('id') id: string, @Body() data: BookUpdateDto) {
+    return await this.bookService.update(id, data);
   }
 }

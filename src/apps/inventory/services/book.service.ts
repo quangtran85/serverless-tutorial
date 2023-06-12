@@ -4,7 +4,16 @@ import { AppException } from '@shared/libs/exception';
 import { ResourceDataOutput, ResourceOuput } from '@shared/type';
 import { Service } from 'typedi';
 
-export type CreateBookInput = {
+export type BookCreateInput = {
+  title: string;
+  author: string;
+  price: number;
+  stock: number;
+  reorderThreshold: number;
+  stopOrder?: boolean;
+};
+
+export type BookUpdateInput = {
   title: string;
   author: string;
   price: number;
@@ -27,7 +36,7 @@ export class BookService {
   constructor(private readonly bookRepository: BookRepository) {}
 
   async createGet(
-    data: CreateBookInput,
+    data: BookCreateInput,
   ): Promise<ResourceDataOutput<BookOutput>> {
     const entity = await this.bookRepository.createGet(data);
     return {
@@ -39,6 +48,8 @@ export class BookService {
         stock: entity.stock,
         reorderThreshold: entity.reorderThreshold,
         stopOrder: entity.stopOrder,
+        createdAt: entity.createdAt,
+        updatedAt: entity.updatedAt,
       },
     };
   }
@@ -63,5 +74,18 @@ export class BookService {
         updatedAt: result.updatedAt,
       },
     };
+  }
+
+  async update(
+    id: string,
+    data: BookUpdateInput,
+  ): Promise<ResourceDataOutput<BookOutput>> {
+    const isUpdated = await this.bookRepository.updateById(id, { ...data });
+    if (!isUpdated) {
+      const { errorCode, message, httpCode } = Errors.INTERNAL_SERVER_ERROR;
+      throw new AppException(errorCode, message, httpCode);
+    }
+
+    return await this.get(id);
   }
 }
