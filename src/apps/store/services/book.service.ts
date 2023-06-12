@@ -8,6 +8,8 @@ import {
   ResourceDataOutput,
 } from '@shared/type';
 import { Service } from 'typedi';
+import { FilterQuery } from 'mongoose';
+import { Book } from '@apps/store/models/book';
 
 export type GetBooksInput = GetResourcesInput;
 export type GetBooksOutput = ResourcesPaginateOutput<BookOutput>;
@@ -40,8 +42,16 @@ export type UpdateUserInput = {
 export class BookService {
   constructor(private readonly bookRepository: BookRepository) {}
 
-  async getAll(data: GetBooksInput): Promise<GetBooksOutput> {
-    const result = await this.bookRepository.findAndCount({}, { ...data });
+  async getAll(
+    filter: FilterQuery<Book>,
+    data: GetBooksInput,
+  ): Promise<GetBooksOutput> {
+    if (!filter.title) {
+      filter = {};
+    }
+    const result = await this.bookRepository.findAndCount(filter, {
+      ...data,
+    });
     return {
       data: result?.data.map(
         (item) =>
