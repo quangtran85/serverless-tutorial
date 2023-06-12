@@ -23,6 +23,15 @@ export type CreateBookInput = {
   reorderThreshold?: number;
 };
 
+export type UpdateBookInput = {
+  price: number;
+  title: string;
+  authorName: string;
+  numberInStock: number;
+  stopOrder?: boolean;
+  reorderThreshold?: number;
+};
+
 @Service()
 export class BookService {
   constructor(private readonly bookRepository: BookRepository) {}
@@ -51,5 +60,18 @@ export class BookService {
         reorderThreshold: entity.reorderThreshold,
       },
     };
+  }
+
+  async updateBook(
+    id: string,
+    data: UpdateBookInput,
+  ): Promise<ResourceDataOutput<boolean>> {
+    const entity = await this.bookRepository.get(id);
+    if (!entity) {
+      const { errorCode, message, httpCode } = Errors.ERROR_BOOK_NOT_FOUND;
+      throw new AppException(errorCode, message, httpCode);
+    }
+    const updatedBook = await this.bookRepository.update(id, data);
+    return { data: updatedBook };
   }
 }
