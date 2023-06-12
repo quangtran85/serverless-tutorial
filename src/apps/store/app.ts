@@ -4,6 +4,7 @@ import { createExpressServer, useContainer } from 'routing-controllers';
 import { Container } from 'typedi';
 import { BookController } from './controllers/book.controller';
 import { PromotionController } from './controllers/promotion.controller';
+import { OrderController } from '@apps/store/controllers/order.controller';
 import { connectDb } from '@shared/providers/mongodb';
 import { HttpErrorHandler } from '@shared/middlewares/http-error-handler.middleware';
 import authorizationChecker from '@shared/auth/authorization-checker';
@@ -13,7 +14,7 @@ useContainer(Container);
 export const application = createExpressServer({
   routePrefix: '/store',
   defaultErrorHandler: false,
-  controllers: [BookController, PromotionController],
+  controllers: [BookController, PromotionController, OrderController],
   middlewares: [HttpErrorHandler],
   authorizationChecker: authorizationChecker,
   currentUserChecker: currentUserChecker,
