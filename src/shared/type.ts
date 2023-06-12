@@ -7,13 +7,13 @@ export type PaginateType = {
 
 export type GetResourcesInput = PaginateType;
 
-export type ResourceOuput = {
+export type ResourceOutput = {
   id: string;
   createdAt?: Date;
   updatedAt?: Date;
 };
 
-export type PaginateOuput = {
+export type PaginateOutput = {
   total: number;
   limit: number;
   skip: number;
@@ -23,8 +23,8 @@ export type ResourceDataOutput<T> = {
   data: T;
 };
 
-export declare type ResourcesPaginateOuput<T> = {
-  pagination?: PaginateOuput;
+export declare type ResourcesPaginateOutput<T> = {
+  pagination?: PaginateOutput;
 } & ResourceDataOutput<T[]>;
 
 export enum UserRole {
