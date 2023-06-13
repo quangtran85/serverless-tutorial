@@ -17,18 +17,18 @@ import { Service } from 'typedi';
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
-  @Post('/create')
+  @Post('/')
   @Authorized(UserRole.MANAGER)
   async create(@Body() data: BookCreateDto) {
     return await this.bookService.createGet(data);
   }
 
-  @Get('/detail/:id')
+  @Get('/:id')
   async detail(@Param('id') id: string) {
     return await this.bookService.get(id);
   }
 
-  @Put('/update/:id')
+  @Put('/:id')
   @Authorized(UserRole.MANAGER)
   async update(@Param('id') id: string, @Body() data: BookUpdateDto) {
     return await this.bookService.update(id, data);
