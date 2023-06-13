@@ -4,4 +4,9 @@ export const Errors = {
     errorCode: 'NotFound',
     message: 'The book does not found.',
   },
+  INTERNAL_SERVER_ERROR: {
+    httpCode: 500,
+    errorCode: 'InternalServerError',
+    message: 'Internal server error.',
+  },
 };
