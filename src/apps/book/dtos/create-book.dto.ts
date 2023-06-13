@@ -17,8 +17,8 @@ export class CreateBookDto {
 
   @IsOptional()
   @IsBoolean()
-  stopOrder: boolean;
+  stopOrder?: boolean;
 
   @IsOptional()
-  reorderThreshold: number;
+  reorderThreshold?: number;
 }

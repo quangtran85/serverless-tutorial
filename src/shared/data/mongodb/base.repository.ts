@@ -17,6 +17,7 @@ export type PaginatedResult<T> = {
     limit: number;
     skip: number;
     total: number;
+    lastPage: number;
   };
 };
 
@@ -117,6 +118,7 @@ export abstract class BaseRepository<T extends BaseModel<T>> {
         skip: paginate.skip,
         limit: paginate.limit,
         total: result[0]?.total ?? 0,
+        lastPage: Math.ceil(result[0]?.total / paginate.limit),
       },
     };
   }
