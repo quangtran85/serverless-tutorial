@@ -1,10 +1,12 @@
 import { OrderRepository } from '@apps/store/repositories/order.repository';
-import { ResourceOutput, ResourceDataOutput } from '@shared/type';
+import { ResourceOutput } from '@shared/type';
 import { Service } from 'typedi';
 import { AppException } from '@shared/libs/exception';
 import { Errors } from '@apps/store/configs/errors';
 import { BookService, BookOutput } from '@apps/store/services/book.service';
 import { PromotionService } from '@apps/store/services/promotion.service';
+import { UserAuthRepository } from '@apps/auth/repositories/user-auth.repository';
+import sendMail from '@shared/libs/mailer';
 
 export type OrderItem = {
   bookId: string;
@@ -27,6 +29,7 @@ export class OrderService {
   constructor(
     private readonly bookService: BookService,
     private readonly orderRepository: OrderRepository,
+    private readonly userAuthRepository: UserAuthRepository,
     private readonly promotionService: PromotionService,
   ) {}
 
@@ -106,6 +109,16 @@ export class OrderService {
         await this.bookService.decreaseStock(item, 1);
       }),
     );
+
+    // Send email notification to the user
+    const userAuth = await this.userAuthRepository.findOne({
+      userId,
+    });
+    const { email } = userAuth;
+    const userEmail = email;
+    const emailSubject = 'Order Confirmation';
+    const emailContent = 'Thank you for your order!';
+    await sendMail(userEmail, emailSubject, emailContent);
 
     return true;
   }
