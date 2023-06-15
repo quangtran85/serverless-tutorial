@@ -5,8 +5,8 @@ import { AppException } from '@shared/libs/exception';
 import { Errors } from '@apps/store/configs/errors';
 import { BookService, BookOutput } from '@apps/store/services/book.service';
 import { PromotionService } from '@apps/store/services/promotion.service';
-import { UserAuthRepository } from '@apps/auth/repositories/user-auth.repository';
-import sendMail from '@shared/libs/mailer';
+import { sendMail } from '@shared/libs/mailer';
+import { UserService } from './user.service';
 
 export type OrderItem = {
   bookId: string;
@@ -28,22 +28,18 @@ export type CreateOrderInput = {
 export class OrderService {
   constructor(
     private readonly bookService: BookService,
+    private readonly userService: UserService,
     private readonly orderRepository: OrderRepository,
-    private readonly userAuthRepository: UserAuthRepository,
     private readonly promotionService: PromotionService,
   ) {}
 
   private async validateCreditCard(creditCardNumber: string): Promise<boolean> {
     // Hard-coded credit card number for validation
     const validCreditCardNumber = '121212';
-    const isValid = creditCardNumber === validCreditCardNumber;
-    return isValid;
+    return creditCardNumber === validCreditCardNumber;
   }
 
-  async createOrder(
-    userId: string,
-    data: CreateOrderInput,
-  ): Promise<boolean> {
+  async createOrder(userId: string, data: CreateOrderInput): Promise<boolean> {
     const { items, creditCardNumber, couponCode } = data;
 
     // Check if the credit card number is valid
@@ -111,11 +107,8 @@ export class OrderService {
     );
 
     // Send email notification to the user
-    const userAuth = await this.userAuthRepository.findOne({
-      userId,
-    });
-    const { email } = userAuth;
-    const userEmail = email;
+    const user = await this.userService.getUserById(userId);
+    const userEmail = user.data.email;
     const emailSubject = 'Order Confirmation';
     const emailContent = 'Thank you for your order!';
     await sendMail(userEmail, emailSubject, emailContent);

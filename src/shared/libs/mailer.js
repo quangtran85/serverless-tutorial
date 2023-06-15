@@ -1,17 +1,19 @@
 // mailer.js
-const nodemailer = require('nodemailer');
+import * as nodemailer from 'nodemailer';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const transporter = nodemailer.createTransport({
   host: process.env.MAIL_HOST,
   port: process.env.MAIL_PORT,
-  secure: true,
+  secure: process.env.MAIL_SECURE,
   auth: {
     user: process.env.MAIL_USERNAME,
     pass: process.env.MAIL_PASSWORD,
   },
 });
 
-const sendMail = async (to, subject, text) => {
+export const sendMail = async (to, subject, text) => {
   const mailOptions = {
     from: process.env.MAIL_FROM,
     to,
@@ -26,5 +28,3 @@ const sendMail = async (to, subject, text) => {
     console.error('Error sending email:', error);
   }
 };
-
-module.exports = sendMail;
