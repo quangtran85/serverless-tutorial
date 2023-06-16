@@ -1,4 +1,8 @@
-import { BookCreateDto, BookUpdateDto } from '@apps/inventory/dtos/book';
+import {
+  BookCreateDto,
+  BookGetListDto,
+  BookUpdateDto,
+} from '@apps/inventory/dtos/book';
 import { BookService } from '@apps/inventory/services/book.service';
 import { UserRole } from '@shared/type';
 import {
@@ -9,6 +13,7 @@ import {
   Param,
   Post,
   Put,
+  QueryParams,
 } from 'routing-controllers';
 import { Service } from 'typedi';
 
@@ -23,9 +28,14 @@ export class BookController {
     return await this.bookService.createGet(data);
   }
 
+  @Get('/')
+  async getList(@QueryParams() data: BookGetListDto) {
+    return await this.bookService.getList(data);
+  }
+
   @Get('/:id')
-  async detail(@Param('id') id: string) {
-    return await this.bookService.get(id);
+  async getDetail(@Param('id') id: string) {
+    return await this.bookService.getDetail(id);
   }
 
   @Put('/:id')

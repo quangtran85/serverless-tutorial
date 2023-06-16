@@ -1,7 +1,12 @@
 import { Errors } from '@apps/inventory/configs/errors';
 import { BookRepository } from '@apps/inventory/repositories/book.repository';
 import { AppException } from '@shared/libs/exception';
-import { ResourceDataOutput, ResourceOuput } from '@shared/type';
+import {
+  GetResourcesInput,
+  ResourceDataOutput,
+  ResourceOuput,
+  ResourcesPaginateOuput,
+} from '@shared/type';
 import { Service } from 'typedi';
 
 export type BookCreateInput = {
@@ -31,6 +36,10 @@ export type BookOutput = ResourceOuput & {
   stopOrder?: boolean;
 };
 
+export type BookGetListInput = GetResourcesInput & { title?: string };
+
+export type BookGetListOutput = ResourcesPaginateOuput<BookOutput>;
+
 @Service()
 export class BookService {
   constructor(private readonly bookRepository: BookRepository) {}
@@ -54,7 +63,7 @@ export class BookService {
     };
   }
 
-  async get(id: string): Promise<ResourceDataOutput<BookOutput>> {
+  async getDetail(id: string): Promise<ResourceDataOutput<BookOutput>> {
     const result = await this.bookRepository.get(id);
     if (!result) {
       const { errorCode, message, httpCode } = Errors.BOOK_NOT_FOUND;
@@ -86,6 +95,27 @@ export class BookService {
       throw new AppException(errorCode, message, httpCode);
     }
 
-    return await this.get(id);
+    return await this.getDetail(id);
+  }
+
+  async getList(data: BookGetListInput): Promise<BookGetListOutput> {
+    const result = await this.bookRepository.findAndCount({}, { ...data });
+    return {
+      data: result?.data.map(
+        (item) =>
+          ({
+            id: item.id,
+            title: item.title,
+            author: item.author,
+            price: item.price,
+            stock: item.stock,
+            reorderThreshold: item.reorderThreshold,
+            stopOrder: item.stopOrder,
+            createdAt: item.createdAt,
+            updatedAt: item.updatedAt,
+          } as BookOutput),
+      ),
+      pagination: result.pagination,
+    };
   }
 }
