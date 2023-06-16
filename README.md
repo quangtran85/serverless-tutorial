@@ -37,10 +37,11 @@ docker-compose up -d
 {
   "AWS_ACCOUNT_ID": "627365243885",
   "ACCOUNT_MONGODB_URL": "mongodb://root:example@localhost:27017/account",
-  "AUTH_MONGODB_URL":"mongodb://root:example@localhost:27017/auth"
+  "AUTH_MONGODB_URL":"mongodb://root:example@localhost:27017/auth",
+  "INVENTORY_MONGODB_URL":"mongodb://root:example@localhost:27017/inventory"
 }
 ```
- 
+
 ## Deploying
 Run the command to deploy serverless application to cloud provider (AWS)
 ```
