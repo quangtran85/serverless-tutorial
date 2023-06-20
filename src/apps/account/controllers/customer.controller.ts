@@ -5,6 +5,7 @@ import {
   Body,
   Authorized,
   CurrentUser,
+  QueryParams,
 } from 'routing-controllers';
 import { Service } from 'typedi';
 import { CustomerRegisterDto } from '@apps/account/dtos/customer/register.dto';
@@ -25,5 +26,11 @@ export class CustomerController {
   @Post('/register')
   async create(@Body() data: CustomerRegisterDto) {
     return this.userService.createGet(data);
+  }
+
+  @Get('/getUser')
+  @Authorized(UserRole.SYSTEM)
+  async getUser(@QueryParams() params: { id: string }) {
+    return this.userService.get(params.id);
   }
 }

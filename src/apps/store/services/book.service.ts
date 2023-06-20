@@ -1,4 +1,4 @@
-import { Errors } from '@apps/account/configs/errors';
+import { Errors } from '@apps/store/configs/errors';
 import { AppException } from '@shared/libs/exception';
 import { BookRepository } from '@apps/store/repositories/book.repository';
 import {
@@ -114,5 +114,28 @@ export class BookService {
 
   async update(id: string, data: UpdateUserInput) {
     return await this.bookRepository.update(id, { ...data }, { new: true });
+  }
+
+  async findBooksByIds(bookIds: string[]): Promise<BookOutput[]> {
+    const filter: FilterQuery<Book> = { _id: { $in: bookIds } };
+
+    const books = await this.bookRepository.find(filter);
+
+    return books.map((book) => ({
+      id: book.id,
+      title: book.title,
+      author: book.author,
+      price: book.price,
+      stock: book.stock,
+      reOrderThreshold: book.reOrderThreshold,
+      isStopOrder: book.isStopOrder,
+      createdAt: book.createdAt,
+      updatedAt: book.updatedAt,
+    }));
+  }
+
+  async decreaseStock(book: BookOutput, quantity: number): Promise<boolean> {
+    book.stock -= quantity;
+    return await this.bookRepository.update(book.id, { stock: book.stock });
   }
 }

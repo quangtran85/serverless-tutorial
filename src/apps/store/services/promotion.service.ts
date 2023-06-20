@@ -14,6 +14,10 @@ export type CreatePromotionInput = {
   expirationDate: Date;
 };
 
+export type CheckPromotionOutput = {
+  percentDiscount: number;
+};
+
 @Service()
 export class PromotionService {
   constructor(private readonly promotionRepository: PromotionRepository) {}
@@ -53,5 +57,28 @@ export class PromotionService {
 
     const randomString = randomArray.join('');
     return randomString;
-  };
+  }
+
+  async checkCouponCode(
+    couponCode: string,
+  ): Promise<
+    ResourceDataOutput<CheckPromotionOutput> | ResourceDataOutput<boolean>
+  > {
+    const currentDate = new Date();
+
+    const promotion = await this.promotionRepository.findOne({
+      couponCode: couponCode,
+      expirationDate: { $gte: currentDate }, // Check if the expiration date is greater than or equal to the current date
+    });
+
+    if (!promotion) {
+      return { data: false };
+    }
+
+    return {
+      data: {
+        percentDiscount: promotion.percentDiscount,
+      },
+    };
+  }
 }
