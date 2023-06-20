@@ -65,7 +65,7 @@ export abstract class BaseRepository<T extends BaseModel<T>> {
     select?: ProjectionType<T> | undefined,
     options?: QueryOptions,
   ): Promise<T | undefined> {
-    const query = this.model.findOne(filter, select, options);
+    const query = this.model.findOne<T>(filter, select, options);
     const result = await query.exec();
 
     return result?.toEntity() ?? undefined;
@@ -147,7 +147,7 @@ export abstract class BaseRepository<T extends BaseModel<T>> {
    * @returns {Promise<string>}
    */
   async create(data: TData<T>, options?: SaveOptions): Promise<string> {
-    const result = await this.model.create([data], options);
+    const result = await this.model.create<T>([data], options);
     return result && result[0]._id.toHexString();
   }
 
@@ -159,7 +159,7 @@ export abstract class BaseRepository<T extends BaseModel<T>> {
    * @returns {Promise<T>}
    */
   async createGet(data: TData<T>, options?: SaveOptions): Promise<T> {
-    const result = await this.model.create([data], options);
+    const result = await this.model.create<T>([data], options);
     return result && result[0].toEntity();
   }
 

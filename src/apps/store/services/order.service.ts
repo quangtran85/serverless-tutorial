@@ -35,7 +35,7 @@ export class OrderService {
 
   private async validateCreditCard(creditCardNumber: string): Promise<boolean> {
     // Hard-coded credit card number for validation
-    const validCreditCardNumber = '121212';
+    const validCreditCardNumber = '1111111111111111';
     return creditCardNumber === validCreditCardNumber;
   }
 
@@ -83,19 +83,28 @@ export class OrderService {
 
       // Apply discount if promotion result is valid
       if (
-        typeof promotionResult !== 'boolean' &&
+        typeof promotionResult.data !== 'boolean' &&
         promotionResult?.data?.percentDiscount
       ) {
-        const percentDiscount = promotionResult.data.percentDiscount;
+        const percentDiscount = promotionResult.data?.percentDiscount;
         const discountAmount = (totalPrice * percentDiscount) / 100;
         totalPrice -= discountAmount;
       }
     }
 
     // Create the order
+    const orderItems = items.map((item) => {
+      const book = books.find((book) => book.id === item.bookId);
+      return {
+        bookId: item.bookId,
+        title: book ? book.title : '',
+        price: book ? book.price : 0,
+      };
+    });
+
     await this.orderRepository.createGet({
       userId,
-      items,
+      items: orderItems,
       totalPrice,
     });
 

@@ -61,20 +61,18 @@ export class PromotionService {
 
   async checkCouponCode(
     couponCode: string,
-  ): Promise<ResourceDataOutput<CheckPromotionOutput> | boolean> {
+  ): Promise<
+    ResourceDataOutput<CheckPromotionOutput> | ResourceDataOutput<boolean>
+  > {
+    const currentDate = new Date();
+
     const promotion = await this.promotionRepository.findOne({
       couponCode: couponCode,
+      expirationDate: { $gte: currentDate }, // Check if the expiration date is greater than or equal to the current date
     });
 
     if (!promotion) {
-      return false; // Discount code does not exist
-    }
-
-    const currentDate = new Date();
-    const expirationDate = promotion.expirationDate;
-
-    if (currentDate > expirationDate) {
-      return false; // Expired discount code
+      return { data: false };
     }
 
     return {

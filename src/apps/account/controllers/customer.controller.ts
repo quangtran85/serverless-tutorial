@@ -30,7 +30,7 @@ export class CustomerController {
 
   @Get('/getUser')
   @Authorized(UserRole.SYSTEM)
-  async createUserAuth(@QueryParams() params: { id: string }) {
+  async getUser(@QueryParams() params: { id: string }) {
     return this.userService.get(params.id);
   }
 }

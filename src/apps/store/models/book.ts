@@ -9,18 +9,17 @@ export class Book extends BaseModel<Book> {
   @prop({ required: true, limit: 50 })
   public author: string;
 
-  @prop({ required: true})
+  @prop({ required: true })
   public price: number;
 
-  @prop({ required: true})
+  @prop({ required: true })
   public stock: number;
 
-  @prop({ required: false})
+  @prop({ required: false })
   public reOrderThreshold?: number;
 
-  @prop({ required: false})
+  @prop({ required: false })
   public isStopOrder?: boolean;
-
 
   toEntity(book = new Book()): Book {
     book = this.toBaseEntity(book);
