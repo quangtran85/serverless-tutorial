@@ -23,7 +23,13 @@ export class BookController {
   @Get('/all')
   async getAll(@QueryParams() params: BookSearchDto) {
     const { title, ...paginateParams } = params;
-    return this.bookService.getAll({ title }, paginateParams);
+    return this.bookService.getBooks({ title }, paginateParams);
+  }
+
+  @Get('/all-in-stock')
+  async getAllInStock(@QueryParams() params: BookSearchDto) {
+    const { title, ...paginateParams } = params;
+    return this.bookService.getBooks({ title, inStock: true }, paginateParams);
   }
 
   @Get('/:id')

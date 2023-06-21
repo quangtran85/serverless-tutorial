@@ -42,12 +42,22 @@ export type UpdateUserInput = {
 export class BookService {
   constructor(private readonly bookRepository: BookRepository) {}
 
-  async getAll(
+  async getBooks(
     filter: FilterQuery<Book>,
     data: GetBooksInput,
   ): Promise<GetBooksOutput> {
-    if (!filter.title) {
-      filter = {};
+    const {title, inStock} = filter;
+    const defaultFilter: FilterQuery<Book> = {
+      title: { $ne: null },
+    };
+    if (!title) {
+      filter = defaultFilter;
+    }
+    if (inStock) {
+      filter = {
+        ...filter,
+        stock: { $gt: 1 },
+      };
     }
     const result = await this.bookRepository.findAndCount(filter, {
       ...data,

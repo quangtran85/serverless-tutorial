@@ -41,6 +41,7 @@ export class OrderService {
 
   async createOrder(userId: string, data: CreateOrderInput): Promise<boolean> {
     const { items, creditCardNumber, couponCode } = data;
+    const uniqueItems = [...new Set(items)];
 
     // Check if the credit card number is valid
     const isCreditCardValid = await this.validateCreditCard(creditCardNumber);
@@ -50,11 +51,10 @@ export class OrderService {
     }
 
     // Validate that all books in the order have sufficient stock
-    const bookIds = items.map((item) => item.bookId);
+    const bookIds = uniqueItems.map((item) => item.bookId);
     const books = await this.bookService.findBooksByIds(bookIds);
     const insufficientStockBooks = books.filter((book: BookOutput) => {
-      const orderItem = items.find((item) => item.bookId === book.id);
-      return book.stock < (orderItem ? 1 : 0);
+      return book.stock < 1;
     });
 
     if (insufficientStockBooks.length > 0) {
@@ -66,8 +66,7 @@ export class OrderService {
 
     // Calculate the total price of the books
     let totalPrice = books.reduce((total, book) => {
-      const orderItem = items.find((item) => item.bookId === book.id);
-      return total + (orderItem ? book.price : 0);
+      return total + book.price;
     }, 0);
 
     // Check if coupon code is provided
@@ -93,12 +92,11 @@ export class OrderService {
     }
 
     // Create the order
-    const orderItems = items.map((item) => {
-      const book = books.find((book) => book.id === item.bookId);
+    const orderItems = books.map((item) => {
       return {
-        bookId: item.bookId,
-        title: book ? book.title : '',
-        price: book ? book.price : 0,
+        bookId: item.id,
+        title: item.title,
+        price: item.price,
       };
     });
 
