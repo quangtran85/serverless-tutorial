@@ -39,3 +39,8 @@ export enum TokenStatus {
   ACTIVE = 'active',
   INACTIVE = 'inactive',
 }
+
+export enum BookStatus {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+}

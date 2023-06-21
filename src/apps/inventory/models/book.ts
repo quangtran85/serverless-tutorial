@@ -1,4 +1,5 @@
 import { BaseModel } from '@shared/data/mongodb';
+import { BookStatus } from '@shared/type';
 import { getModelForClass, modelOptions, prop } from '@typegoose/typegoose';
 
 @modelOptions({ schemaOptions: { collection: 'books' } })
@@ -21,6 +22,9 @@ export class Book extends BaseModel<Book> {
   @prop({ required: false, default: false })
   public stopOrder: boolean;
 
+  @prop({ required: true, default: BookStatus.ACTIVE })
+  public status: BookStatus;
+
   toEntity(book = new Book()): Book {
     book = this.toBaseEntity(book);
     book.title = this.title;
@@ -29,6 +33,7 @@ export class Book extends BaseModel<Book> {
     book.stock = this.stock;
     book.reorderThreshold = this.reorderThreshold;
     book.stopOrder = this.stopOrder;
+    book.status = this.status;
     return book;
   }
 }

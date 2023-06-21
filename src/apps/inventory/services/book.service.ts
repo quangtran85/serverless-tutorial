@@ -2,6 +2,7 @@ import { Errors } from '@apps/inventory/configs/errors';
 import { BookRepository } from '@apps/inventory/repositories/book.repository';
 import { AppException } from '@shared/libs/exception';
 import {
+  BookStatus,
   GetResourcesInput,
   ResourceDataOutput,
   ResourceOuput,
@@ -34,9 +35,13 @@ export type BookOutput = ResourceOuput & {
   stock: number;
   reorderThreshold: number;
   stopOrder?: boolean;
+  status: string;
 };
 
-export type BookGetListInput = GetResourcesInput & { title?: string };
+export type BookGetListInput = GetResourcesInput & {
+  title?: string;
+  status?: BookStatus;
+};
 
 export type BookGetListOutput = ResourcesPaginateOuput<BookOutput>;
 
@@ -57,6 +62,7 @@ export class BookService {
         stock: entity.stock,
         reorderThreshold: entity.reorderThreshold,
         stopOrder: entity.stopOrder,
+        status: entity.status,
         createdAt: entity.createdAt,
         updatedAt: entity.updatedAt,
       },
@@ -79,6 +85,7 @@ export class BookService {
         stock: result.stock,
         reorderThreshold: result.reorderThreshold,
         stopOrder: result.stopOrder,
+        status: result.status,
         createdAt: result.createdAt,
         updatedAt: result.updatedAt,
       },
@@ -99,7 +106,15 @@ export class BookService {
   }
 
   async getList(data: BookGetListInput): Promise<BookGetListOutput> {
-    const result = await this.bookRepository.findAndCount({}, { ...data });
+    let filterStatus = BookStatus.ACTIVE;
+    if (data?.status) {
+      filterStatus = data.status;
+    }
+    const result = await this.bookRepository.findAndCount(
+      { status: filterStatus },
+      { ...data },
+    );
+
     return {
       data: result?.data.map(
         (item) =>
@@ -111,6 +126,7 @@ export class BookService {
             stock: item.stock,
             reorderThreshold: item.reorderThreshold,
             stopOrder: item.stopOrder,
+            status: item.status,
             createdAt: item.createdAt,
             updatedAt: item.updatedAt,
           } as BookOutput),
