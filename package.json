@@ -4,6 +4,7 @@
   "description": "",
   "dependencies": {
     "@typegoose/typegoose": "^11.0.2",
+    "@types/nodemailer": "^6.4.8",
     "aws-sdk": "^2.1359.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
@@ -15,6 +16,7 @@
     "moment-timezone": "^0.5.43",
     "mongoose": "^7.0.5",
     "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.3",
     "reflect-metadata": "^0.1.13",
     "routing-controllers": "^0.10.3",
     "serverless-http": "^3.1.1",
@@ -23,7 +25,8 @@
   "scripts": {
     "start:dev": "sls offline start --reloadHandler --stage=local",
     "start:docker": "sls offline start --reloadHandler --stage=local --host=0.0.0.0",
-    "deploy:dev": "sls deploy --stage=dev"
+    "deploy:dev": "sls deploy --stage=dev",
+    "lint": "eslint src --ext .ts"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -37,7 +40,6 @@
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "nodemailer": "^6.9.3",
     "prettier": "^2.3.2",
     "serverless-offline": "^12.0.4",
     "serverless-offline-watcher": "^1.1.0",
