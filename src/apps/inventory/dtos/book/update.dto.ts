@@ -1,5 +1,7 @@
+import { BookStatus } from '@shared/type';
 import {
   IsBoolean,
+  IsEnum,
   IsInt,
   IsNotEmpty,
   IsNumber,
@@ -35,4 +37,8 @@ export class BookUpdateDto {
   @IsOptional()
   @IsBoolean()
   stopOrder?: boolean;
+
+  @IsOptional()
+  @IsEnum(BookStatus)
+  status?: BookStatus;
 }
