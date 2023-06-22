@@ -46,7 +46,7 @@ export class UserService {
     private readonly authService: AuthService,
   ) {}
 
-  async getAll(data: GetUsersInput): Promise<GetUsersOuput> {
+  async getAll(data: GetUsersInput): Promise<GetUsersOutput> {
     const result = await this.userRepository.findAndCount({}, { ...data });
     return {
       data: result?.data.map(
@@ -54,8 +54,6 @@ export class UserService {
           ({
             id: item.id,
             email: item.email,
-            lastName: item.lastName,
-            firstName: item.firstName,
             createdAt: item.createdAt,
             updatedAt: item.updatedAt,
           } as UserOutput),

@@ -46,7 +46,7 @@ export class BookService {
     filter: FilterQuery<Book>,
     data: GetBooksInput,
   ): Promise<GetBooksOutput> {
-    const {title, inStock} = filter;
+    const { title, inStock } = filter;
     const defaultFilter: FilterQuery<Book> = {
       title: { $ne: null },
     };

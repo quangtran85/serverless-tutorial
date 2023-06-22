@@ -5,8 +5,10 @@ import { AppException } from '@shared/libs/exception';
 import { Errors } from '@apps/store/configs/errors';
 import { BookService, BookOutput } from '@apps/store/services/book.service';
 import { PromotionService } from '@apps/store/services/promotion.service';
-import { sendMail } from '@shared/libs/mailer';
 import { UserService } from './user.service';
+import Mailer from '@shared/libs/mailer';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 export type OrderItem = {
   bookId: string;
@@ -75,7 +77,7 @@ export class OrderService {
         couponCode,
       );
 
-      if (promotionResult === false) {
+      if (promotionResult.data === false) {
         const { errorCode, message, httpCode } = Errors.INVALID_COUPON_CODE;
         throw new AppException(errorCode, message, httpCode);
       }
@@ -118,7 +120,16 @@ export class OrderService {
     const userEmail = user.data.email;
     const emailSubject = 'Order Confirmation';
     const emailContent = 'Thank you for your order!';
-    await sendMail(userEmail, emailSubject, emailContent);
+    const option = {
+      host: process.env.MAIL_HOST,
+      port: Number(process.env.MAIL_PORT),
+      secure: process.env.MAIL_SECURE === 'true',
+      username: process.env.MAIL_USERNAME,
+      password: process.env.MAIL_PASSWORD,
+      from: process.env.MAIL_FROM,
+    };
+    const mailer = new Mailer(option);
+    await mailer.sendMail(userEmail, emailSubject, emailContent);
 
     return true;
   }
