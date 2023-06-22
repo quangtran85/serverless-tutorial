@@ -45,8 +45,9 @@ export class BookService {
   async getBooks(
     filter: FilterQuery<Book>,
     data: GetBooksInput,
+    inStock?: boolean,
   ): Promise<GetBooksOutput> {
-    const { title, inStock } = filter;
+    const { title } = filter;
     const defaultFilter: FilterQuery<Book> = {
       title: { $ne: null },
     };
@@ -56,7 +57,7 @@ export class BookService {
     if (inStock) {
       filter = {
         ...filter,
-        stock: { $gt: 1 },
+        stock: { $gt: 0 },
       };
     }
     const result = await this.bookRepository.findAndCount(filter, {

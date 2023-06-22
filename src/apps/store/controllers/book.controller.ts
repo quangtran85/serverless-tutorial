@@ -29,7 +29,7 @@ export class BookController {
   @Get('/all-in-stock')
   async getAllInStock(@QueryParams() params: BookSearchDto) {
     const { title, ...paginateParams } = params;
-    return this.bookService.getBooks({ title, inStock: true }, paginateParams);
+    return this.bookService.getBooks({ title }, paginateParams, true);
   }
 
   @Get('/:id')
